@@ -50,21 +50,19 @@ Analysing the file \thesisTXT with this program we find:
 \end{center}
 
 \section{Bigram statistics}\label{sec:ex2}
-If we split a text into its constituent bigrams as a pre-procesing step we can
+If we split a text into its constituent bigrams as a pre-procesing step, we can
 use the program of Section~\ref{sec:ex1} to compute the joint entropy $H(X_n,
-X_{n+1})$ of character bigrams in a given file.
-
-We expect this number to be lower than $2H(X_n)$ because by $p(x,y) \le
-p(x) \cdot p(y)$ and monotonicity of the logarithm we have $\forall X,Y: H(X, Y)
-\le H(X) + H(Y)$ with equality only occuring if $X$ and $Y$ are independent
-\cite[p.~138]{mackay}. Here, we $X$ and $Y$ are occurrences of characters in
-English text which are not independent \cite[p.~22-24]{mackay}.
-
-Analyzing \thesisTXT, we find:
+X_{n+1})$ of character bigrams in a given file. For \thesisTXT, we find:
 
 \begin{center}
     $H(X_n, X_{n+1}) = 7.572 \approx 1.82H(X_n)$
 \end{center}
+
+As expected, this number is lower than $2H(X_n)$. By $p(x,y) \le p(x) \cdot
+p(y)$ and monotonicity of the logarithm we have $\forall X,Y: H(X, Y) \le H(X) +
+H(Y)$ with equality only occuring if $X$ and $Y$ are independent
+\cite[p.~138]{mackay}. Here, we $X$ and $Y$ are occurrences of characters in
+English text which are not independent \cite[p.~22-24]{mackay}.
 
 Rearanging the chain rule of entropy \cite[p.~139]{mackay} reveals that we can
 also use the program of Section~\ref{sec:ex1} to compute the conditional
