@@ -32,12 +32,12 @@ def _main(received_file, packets_file):
     received = [int(x) for l in received_file for x in l.strip().split()]
     packets = [[int(x) for x in l.strip().split()] for l in packets_file]
     decoded = decode(received, packets)
-    packets_used = [i for (i, num) in enumerate(decoded) if num is not None]
-    packets_unused = [i for (i, num) in enumerate(decoded) if num is None]
-    decoded_msg = ''.join(chr(num) for num in decoded if num is not None)
-    print 'Packets used:\t%s' % packets_used
-    print 'Packets unused:\t%s' % packets_unused
-    print 'Decoded string:\t"%s"' % decoded_msg
+    used = [i + 1 for (i, num) in enumerate(decoded) if num is not None]
+    unused = [i + 1 for (i, num) in enumerate(decoded) if num is None]
+    message = ''.join(chr(num) for num in decoded if num is not None)
+    print 'Packets used:\t%s' % used
+    print 'Packets unused:\t%s' % unused
+    print 'Decoded string:\t"%s"' % message
 
 
 def _test():
