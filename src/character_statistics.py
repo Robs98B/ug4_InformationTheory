@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-
-
 from __future__ import division
 from collections import defaultdict
 from itertools import izip
