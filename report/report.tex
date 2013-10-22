@@ -76,8 +76,10 @@ English \cite{oed}.}
 For \thesisTXT, we have:
 
 \begin{center}
-    $H(X_n) = 4.168$
+    $H(X_n) = 4.168$\footnotemark
 \end{center}
+\footnotetext{Sanity check: this is pretty close to the ``4.11'' quoted on page
+4 of Week 4's slides.}
 
 \section{Bigram statistics}\label{sec:ex2}
 
@@ -86,8 +88,10 @@ use the program of Section~\ref{sec:ex1} to compute the joint entropy $H(X_n,
 X_{n+1})$ of character bigrams in a given file. For \thesisTXT, we find:
 
 \begin{center}
-    $H(X_n, X_{n+1}) = 7.572 \approx 1.82H(X_n)$
+    $H(X_n, X_{n+1}) = 7.572 \approx 1.82H(X_n)$\footnotemark
 \end{center}
+\footnotetext{Sanity check: this is pretty close to the ``7.6'' quoted on page
+5 of Week 4's slides.}
 
 As expected, this number is lower than $2H(X_n)$. By $p(x,y) \le p(x) \cdot
 p(y)$ and monotonicity of the logarithm we have $\forall X,Y: H(X, Y) \le H(X) +
