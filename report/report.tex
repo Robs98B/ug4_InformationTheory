@@ -15,6 +15,7 @@
 \setlength{\parindent}{0pt}
 
 \newcommand*{\thesisTXT}{{\tt thesis.txt}\xspace}
+\newcommand*{\eg}{e.g.\xspace}
 
 \title{Information Theory - Assessment 1}
 \author{Clemens Wolff (s0942284)}
@@ -37,9 +38,39 @@ It then computes the entropy $H(X_n)$ of the distribution using the formula:
 \begin{center}
     $H(X_n) = -\sum\limits_{x_n} p(x_n) \cdot log~p(x_n)$
 \end{center}
-Analysing the file \thesisTXT with this program we find $H(X_n) = 4.168$.
+Analysing the file \thesisTXT with this program we find:
+\begin{center}
+    $H(X_n) = 4.168$
+\end{center}
 
 \section{Bigram statistics}\label{sec:ex2}
+If we split a text into its constituent bigrams as a pre-procesing step we can
+use the program of Section~\ref{sec:ex1} to compute the joint entropy $H(X_n,
+X_{n+1})$ of character bigrams in a given file.
+
+We expect this number to be lower than $2H(X_n)$ because by $p(x,y) \le
+p(x) \cdot p(y)$ and monotonicity of the logarithm we have $\forall X,Y: H(X, Y)
+\le H(X) + H(Y)$ with equality only occuring if $X$ and $Y$ are independent
+\cite[p.~138]{mackay}. Here, we $X$ and $Y$ are occurrences of characters in
+English text which are not independent \cite[p.~22-24]{mackay}.
+
+Analyzing \thesisTXT, we find:
+\begin{center}
+    $H(X_n, X_{n+1}) = 7.572 \approx 1.82H(X_n)$
+\end{center}
+
+Rearanging the chain rule of entropy \cite[p.~139]{mackay} reveals that we can
+also use the program of Section~\ref{sec:ex1} to compute the conditional
+entropy:
+\begin{center}
+    $H(X_{n+1} | X_n) = H(X_n, X_{n+1}) - H(X_n)$.
+\end{center}
+For \thesisTXT, we have:
+\begin{center}
+    $H(X_{n+1} | X_n) = 3.404$.
+\end{center}
+
+
 \section{Compression with known distributions}\label{sec:ex3}
 \section{Compression with limited precision header}\label{sec:ex4}
 \section{Compression with adaptation}\label{sec:ex5}
@@ -50,6 +81,17 @@ Analysing the file \thesisTXT with this program we find $H(X_n) = 4.168$.
 \section{XOR-ing packets}\label{sec:ex6}
 \section{Decoding packets from a digital fountain}\label{sec:ex7}
 \section{Creating a code}\label{sec:ex8}
+
+
+\begin{thebibliography}{9}
+
+\bibitem{mackay}
+    D.J.C. MacKay,
+    \emph{Information Theory, Inference \& Learning Algorithms},
+    Cambridge University Press,
+    2002.
+
+\end{thebibliography}
 
 
 \onecolumn
