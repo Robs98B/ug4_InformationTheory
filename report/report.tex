@@ -18,6 +18,7 @@
 \newcommand*{\packetsTXT}{{\tt packets.txt}\xspace}
 \newcommand*{\XOR}{{\tt XOR}\xspace}
 \newcommand*{\eg}{e.g.\xspace}
+\newcommand*{\iid}{i.i.d.\xspace}
 
 \title{Information Theory - Assessment 1}
 \author{Clemens Wolff (s0942284)}
@@ -116,6 +117,57 @@ For \thesisTXT, we have:
 
 
 \section{Compression with known distributions}\label{sec:ex3}
+
+If we assume that all characters in a file $f$ are generated independent and
+identically distributed (\iid) from $p(x_n)$ we can compute the probability of
+the entire file as:
+
+\begin{center}
+    $p(f) = \prod\limits_{x_n \in f} p(x_n)$
+    $\log p(f) = \sum\limits_{x_n \in f} \log p(x_n)$
+\end{center}
+
+The number of bits $b_1$ that an arithmetic coder will need to encode $f$
+is given by \cite[p.~21]{it4} as:
+
+\begin{center}
+    $b_1 < -\log p(f) + 2 = 2 - \sum\limits_{x_n \in f} \log p(x_n)$
+\end{center}
+
+Performing this computation for \thesisTXT gives us:
+
+\begin{center}
+    $b_1 < 993,859$ bits
+\end{center}
+
+If we instead assume that only $x_0$, the first character in $f$, is drawn all
+from $p(x_n)$ and all subsequent characters $x_1, x_2, \cdots, x_N$ are drawn
+from $p(x_{n+1} | x_n)$, we can write the probability of the file as:
+
+\begin{center}
+    $p(f) = p(x_0) \cdot \prod\limits_{n = 1}^{N} p(x_{n + 1} | p(x_n))$
+    $ \log p(f)
+    = \log p(x_0) + \sum\limits_{n = 1}^{N} \log p(x_{n + 1} | p(x_n))
+    = \log p(x_0) + \sum\limits_{n = 1}^{N} \log {p(x_n, x_{n + 1}) \over p(x_n)}
+    = \log p(x_0) + \sum\limits_{n = 1}^{N} \log p(x_n, x_{n + 1}) - \log p(x_n)$
+\end{center}
+
+The number of bits $b_2$ that an arithmetic coder will need to encode $f$
+is then:
+
+\begin{center}
+    $b_2 < -\log p(f) + 2
+    = 2 - \log p(x_0) - \sum\limits_{n = 1}^{N} \log p(x_n, x_{n + 1}) + \log p(x_n)$
+\end{center}
+
+Performing this computation for \thesisTXT gives us:
+
+\begin{center}
+    $b_2 < 811,810$ bits
+\end{center}
+
+We use 13\% fewer bits using the bigram model instead of the unigram model!
+
 \section{Compression with limited precision header}\label{sec:ex4}
 \section{Compression with adaptation}\label{sec:ex5}
 
