@@ -63,7 +63,9 @@ $x_n$ & $p(x_n)$ & $x_n$ & $p(x_n)$ \\
 \label{tbl:unigram-probs}
 \end{table}
 
-Using this distribution, the program then computes the entropy:
+Using this distribution\footnotemark, the program then computes the entropy:
+\footnotetext{Sanity check: e, t, a and o are indeed the most common letters in
+English \cite{oed}.}
 
 \begin{center}
     $H(X_n) = -\sum\limits_{x_n} p(x_n) \cdot log~p(x_n)$
@@ -130,6 +132,12 @@ results in the string ``User: s5559183948''
     \emph{Information Theory, Inference \& Learning Algorithms},
     Cambridge University Press,
     2002.
+
+\bibitem{oed}
+    Oxford Dictionary,
+    \emph{What is the frequency of the letters in the alphabet in English?},
+    Oxford University Press,
+    retrieved 22 Oct 2013
 
 \end{thebibliography}
 
