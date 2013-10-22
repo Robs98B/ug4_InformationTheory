@@ -118,6 +118,13 @@ For \thesisTXT, we have:
 
 \section{Compression with known distributions}\label{sec:ex3}
 
+We know \cite[p.~21]{it4} that the number of bits $b$ that an arithmetic coder
+will need to encode any sequence $s$ with probability $p(s)$ follows:
+
+\begin{center}
+    $b < -\log p(s) + 2$
+\end{center}
+
 If we assume that all characters in a file $f$ are generated independent and
 identically distributed (\iid) from $p(x_n)$ we can compute the probability of
 the entire file as:
@@ -127,8 +134,8 @@ the entire file as:
     $\log p(f) = \sum\limits_{x_n \in f} \log p(x_n)$
 \end{center}
 
-The number of bits $b_1$ that an arithmetic coder will need to encode $f$
-is given by \cite[p.~21]{it4} as:
+We can now compute the maximum number of bits $b_1$ that we will need to encode
+$f$ with an arithmetic coder using this unigram model:
 
 \begin{center}
     $b_1 < -\log p(f) + 2 = 2 - \sum\limits_{x_n \in f} \log p(x_n)$
@@ -146,14 +153,19 @@ from $p(x_{n+1} | x_n)$, we can write the probability of the file as:
 
 \begin{center}
     $p(f) = p(x_0) \cdot \prod\limits_{n = 1}^{N} p(x_{n + 1} | p(x_n))$
-    $ \log p(f)
-    = \log p(x_0) + \sum\limits_{n = 1}^{N} \log p(x_{n + 1} | p(x_n))
+    $\log p(f) = \log p(x_0) + \sum\limits_{n = 1}^{N} \log p(x_{n + 1} | p(x_n))$
+\end{center}
+
+Using Bayes Rule we can re-write this as:
+
+\begin{center}
+    $\log p(f)
     = \log p(x_0) + \sum\limits_{n = 1}^{N} \log {p(x_n, x_{n + 1}) \over p(x_n)}
     = \log p(x_0) + \sum\limits_{n = 1}^{N} \log p(x_n, x_{n + 1}) - \log p(x_n)$
 \end{center}
 
-The number of bits $b_2$ that an arithmetic coder will need to encode $f$
-is then:
+Like previously, we can now compute the maximum number of bits $b_2$ that an
+arithmetic coder will need to encode $f$ using this bigram model:
 
 \begin{center}
     $b_2 < -\log p(f) + 2
