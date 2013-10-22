@@ -29,9 +29,10 @@ class DefaultOptionParser(OptionParser):
 
     def _validate_args(self):
         if len(self.args) < self._npositional:
-            self._fatal('need to specify %d input file%s\n%s'
+            self._fatal('need to specify %d input file%s (got %d)\n%s'
                         % (self._npositional,
                            's' if self._npositional > 1 else '',
+                           len(self.args),
                            self.get_usage()))
         if len(self.args) > self._npositional:
             self._warning('unused arguments: %s'
