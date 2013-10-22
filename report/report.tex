@@ -1,5 +1,6 @@
 \documentclass[10pt,a4paper,oneside,onecolumn]{article}
 
+\usepackage{hyperref}
 \usepackage{appendix}
 \usepackage{minted}
 \usepackage{titlesec}
@@ -78,8 +79,8 @@ For \thesisTXT, we have:
 \begin{center}
     $H(X_n) = 4.168$\footnotemark
 \end{center}
-\footnotetext{Sanity check: this is pretty close to the ``4.11'' quoted on page
-4 of Week 4's slides.}
+\footnotetext{Sanity check: this is pretty close to the ``4.11'' in
+\cite[p.~7]{it4}.}
 
 \section{Bigram statistics}\label{sec:ex2}
 
@@ -90,8 +91,8 @@ X_{n+1})$ of character bigrams in a given file. For \thesisTXT, we find:
 \begin{center}
     $H(X_n, X_{n+1}) = 7.572 \approx 1.82H(X_n)$\footnotemark
 \end{center}
-\footnotetext{Sanity check: this is pretty close to the ``7.6'' quoted on page
-5 of Week 4's slides.}
+\footnotetext{Sanity check: this is pretty close to the ``7.6'' in
+\cite[p.~10]{it4}.}
 
 As expected, this number is lower than $2H(X_n)$. By $p(x,y) \le p(x) \cdot
 p(y)$ and monotonicity of the logarithm we have $\forall X,Y: H(X, Y) \le H(X) +
@@ -162,6 +163,14 @@ X!3baA1z''. During the execution of the program, packets 2, 3, 4, 5, 6, 7, 8, 9,
     \emph{Information Theory, Inference \& Learning Algorithms},
     Cambridge University Press,
     2002.
+
+\bibitem{it4}
+    I. Murray,
+    \emph{Practical compression 2: stream codes},
+    Lecture at the University of Edinburgh,
+    15-22 Oct 2013,
+    available on-line at
+        \url{http://www.inf.ed.ac.uk/teaching/courses/it/2012/week4.pdf}
 
 \bibitem{oed}
     Oxford Dictionary,
