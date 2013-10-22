@@ -125,13 +125,28 @@ results in the string ``User: s5559183948''
 
 \section{Decoding packets from a digital fountain}\label{sec:ex7}
 
-Appendix~\ref{app:ex7} proposes a Python program to decode packets from a
-digital fountain.
+A ``digital fountain'' is a code where parts of the source message are \XOR-ed
+together before being sent. Appendix~\ref{app:ex7} proposes a Python program to
+decode this code. On a high level, the program works as follows:
 
-Using the program to decode the input-pair \receivedTXT and \packetsTXT produces
-the string ``Password: X!3baA1z''. During the execution of the program, packets
-2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 and 19 are used
-(leaving packets 1, 20, 21, 22 and 23 unused).
+\begin{enumerate}
+\item We are given as inputs a list of received packets and a list of source
+      packets that were used to encode each of the received packets.
+\item Find a packet that was encoded using only one source packet $s$, say,
+      packet $n$.  If no such packet exists, the message can't be decoded.
+\item We now know that the $n$\textsuperscript{th} character of the original
+      message has to be the character with byte representation $v$.
+\item Find all the packets that used packet $n$ as part of their encoding.
+      \XOR these packets with $v$ and delete $n$ from their encoding list.
+\item Repeat steps 2-4 until all the encoding lists are empty or until we find
+      that the message can't be decoded.
+\end{enumerate}
+
+Using the program to decode the received bytes in \receivedTXT under the
+assumption of the transformations in \packetsTXT produces the string ``Password:
+X!3baA1z''. During the execution of the program, packets 2, 3, 4, 5, 6, 7, 8, 9,
+10, 11, 12, 13, 14, 15, 16, 17, 18 and 19 are used (leaving packets 1, 20, 21,
+22 and 23 unused).
 
 \section{Creating a code}\label{sec:ex8}
 
