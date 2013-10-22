@@ -28,6 +28,11 @@ class ProbabilityDistribution(object):
         xs = xs or ('x%d' % i for i in xrange(len(ps)))
         self._d = dict(izip(xs, ps))
 
+    def __repr__(self):
+        ps = sorted(self._d.iteritems())
+        return ('ProbabilityDistribution[%s]'
+                % (', '.join('p(%s)=%f' % t for t in ps)))
+
     def __call__(self, x):
         return self._d[x]
 
