@@ -1,19 +1,15 @@
-def _next_checknode(packets):
-    try:
-        return next((i, p.pop()) for (i, p) in enumerate(packets)
-                    if len(p) == 1)
-    except StopIteration:
-        raise ValueError('undecodable')
-
-
-def _is_decoded(packets):
-    return sum(map(len, packets)) == 0
-
-
 def decode(received, packets):
     assert len(received) == len(packets)
-    is_decoded = lambda: _is_decoded(packets)
-    next_checknode = lambda: _next_checknode(packets)
+
+    def is_decoded():
+        return sum(map(len, packets)) == 0
+
+    def next_checknode():
+        try:
+            return next((i, p.pop()) for (i, p) in enumerate(packets)
+                        if len(p) == 1)
+        except StopIteration:
+            raise ValueError('undecodable')
 
     decoded = [None] * len(received)
     while not is_decoded():
