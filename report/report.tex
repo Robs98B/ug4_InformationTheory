@@ -1,34 +1,47 @@
-\documentclass[a4paper,twoside,twocolumn]{article}
+\documentclass[10pt,a4paper,twoside,twocolumn]{article}
 
 \usepackage{appendix}
-\usepackage{xspace}
-\usepackage{titling}
 \usepackage{minted}
+\usepackage{titlesec}
+\usepackage[margin=0.9in]{geometry}
 
-\setlength{\droptitle}{-4em}
-\date{\vspace{-2em}}
-\pagenumbering{gobble}
-\renewcommand\thesection{Part \arabic{section}:\xspace}
+\renewcommand*{\thepart}{\arabic{part}}
+\titleformat{\part}[hang]
+{\normalfont\Large\bf}{\partname\ \thepart:}{0.5em}{}[]
+\titleformat{\section}[hang]
+{\normalfont\normalsize\bf}{\thesection.}{0.5em}{}[]
 
 \title{Information Theory - Assessment 1}
 \author{Clemens Wolff (s0942284)}
+\date{\vspace{-2em}}
 
 \begin{document}
 \maketitle
 
-\section{Source coding}
 
-\section{Noisy channel coding}
+\part{Source coding}
+
+\section{Character statistics}
+\section{Bigram statistics}
+\section{Compression with known distributions}
+\section{Compression with limited precision header}
+\section{Compression with adaptation}
+
+
+\part{Noisy channel coding}
+
+\section{XOR-ing packets}
+\section{Decoding packets from a digital fountain}
+\section{Creating a code}
+
 
 \onecolumn
 \appendixpage
 \appendix
-\renewcommand\thesection{Appendix \arabic{section}:\xspace}
 
 \section{Code listing}
-\renewcommand\thesubsection{File:\xspace}
 
-\subsection{ex1.py}
+\subsection{ex1.py}\label{s}
 \inputminted{python}{../src/ex1.py}
 
 \subsection{ex2.py}
