@@ -31,14 +31,20 @@
 The Python program proposed in Appendix~\ref{app:ex1} computes a probability
 distribution over characters from a given input file by counting the number of
 occurrences $c_{x_n}$ of each character $x_n$ in the file and normalizing those
-counts by the total number of characters $C = \sum\limits_{x_n} c_{x_n}$ to
-obtain $p(x_n) = {1 \over C} \cdot c_{x_n}$.
+counts by the total number of characters to obtain:
+
+\begin{center}
+    $p(x_n) = {c_{x_n} \over\sum\limits_{x_n} c_{x_n}}$
+\end{center}
 
 It then computes the entropy $H(X_n)$ of the distribution using the formula:
+
 \begin{center}
     $H(X_n) = -\sum\limits_{x_n} p(x_n) \cdot log~p(x_n)$
 \end{center}
+
 Analysing the file \thesisTXT with this program we find:
+
 \begin{center}
     $H(X_n) = 4.168$
 \end{center}
@@ -55,6 +61,7 @@ p(x) \cdot p(y)$ and monotonicity of the logarithm we have $\forall X,Y: H(X, Y)
 English text which are not independent \cite[p.~22-24]{mackay}.
 
 Analyzing \thesisTXT, we find:
+
 \begin{center}
     $H(X_n, X_{n+1}) = 7.572 \approx 1.82H(X_n)$
 \end{center}
@@ -62,10 +69,13 @@ Analyzing \thesisTXT, we find:
 Rearanging the chain rule of entropy \cite[p.~139]{mackay} reveals that we can
 also use the program of Section~\ref{sec:ex1} to compute the conditional
 entropy:
+
 \begin{center}
     $H(X_{n+1} | X_n) = H(X_n, X_{n+1}) - H(X_n)$.
 \end{center}
+
 For \thesisTXT, we have:
+
 \begin{center}
     $H(X_{n+1} | X_n) = 3.404$.
 \end{center}
