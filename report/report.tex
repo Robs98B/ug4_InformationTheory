@@ -1,0 +1,46 @@
+\documentclass[a4paper,twoside,twocolumn]{article}
+
+\usepackage{appendix}
+\usepackage{xspace}
+\usepackage{titling}
+\usepackage{minted}
+
+\setlength{\droptitle}{-4em}
+\date{\vspace{-2em}}
+\pagenumbering{gobble}
+\renewcommand\thesection{Part \arabic{section}:\xspace}
+
+\title{Information Theory - Assessment 1}
+\author{Clemens Wolff (s0942284)}
+
+\begin{document}
+\maketitle
+
+\section{Source coding}
+
+\section{Noisy channel coding}
+
+\onecolumn
+\appendixpage
+\appendix
+\renewcommand\thesection{Appendix \arabic{section}:\xspace}
+
+\section{Code listing}
+\renewcommand\thesubsection{File:\xspace}
+
+\subsection{ex1.py}
+\inputminted{python}{../src/ex1.py}
+
+\subsection{ex2.py}
+\inputminted{python}{../src/ex2.py}
+
+\subsection{ex6.py}
+\inputminted{python}{../src/ex6.py}
+
+\subsection{ex7.py}
+\inputminted{python}{../src/ex7.py}
+
+\subsection{util.py}
+\inputminted{python}{../src/util.py}
+
+\end{document}
