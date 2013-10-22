@@ -13,6 +13,8 @@
 \setlength{\parindent}{0pt}
 
 \newcommand*{\thesisTXT}{{\tt thesis.txt}\xspace}
+\newcommand*{\receivedTXT}{{\tt received.txt}\xspace}
+\newcommand*{\packetsTXT}{{\tt packets.txt}\xspace}
 \newcommand*{\XOR}{{\tt XOR}\xspace}
 \newcommand*{\eg}{e.g.\xspace}
 
@@ -122,6 +124,15 @@ bytes with numerical values ``59 6 17 0 83 84 26 90 64 70 25 66 86 82 90 95 75''
 results in the string ``User: s5559183948''
 
 \section{Decoding packets from a digital fountain}\label{sec:ex7}
+
+Appendix~\ref{app:ex7} proposes a Python program to decode packets from a
+digital fountain.
+
+Using the program to decode the input-pair \receivedTXT and \packetsTXT produces
+the string ``Password: X!3baA1z''. During the execution of the program, packets
+2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 and 19 are used
+(leaving packets 1, 20, 21, 22 and 23 unused).
+
 \section{Creating a code}\label{sec:ex8}
 
 
