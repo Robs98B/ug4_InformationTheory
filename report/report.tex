@@ -10,7 +10,6 @@
 {\normalfont\Large\bf}{\partname\ \thepart:}{0.5em}{}[]
 \titleformat{\section}[hang]
 {\normalfont\normalsize\bf}{\thesection.}{0.5em}{}[]
-
 \setlength{\parindent}{0pt}
 
 \newcommand*{\thesisTXT}{{\tt thesis.txt}\xspace}
@@ -28,6 +27,7 @@
 \part{Source coding}
 
 \section{Character statistics}\label{sec:ex1}
+
 The Python program proposed in Appendix~\ref{app:ex1} computes a probability
 distribution over characters from a given input file by counting the number of
 occurrences $c_{x_n}$ of each character $x_n$ in the file and normalizing those
@@ -76,6 +76,7 @@ For \thesisTXT, we have:
 \end{center}
 
 \section{Bigram statistics}\label{sec:ex2}
+
 If we split a text into its constituent bigrams as a pre-procesing step, we can
 use the program of Section~\ref{sec:ex1} to compute the joint entropy $H(X_n,
 X_{n+1})$ of character bigrams in a given file. For \thesisTXT, we find:
@@ -113,6 +114,7 @@ For \thesisTXT, we have:
 \part{Noisy channel coding}
 
 \section{\XOR-ing packets}\label{sec:ex6}
+
 Performing the \XOR operation between the string ``nutritious snacks'' and the
 bytes with numerical values ``59 6 17 0 83 84 26 90 64 70 25 66 86 82 90 95 75''
 results in the string ``User: s5559183948''
