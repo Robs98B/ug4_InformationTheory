@@ -3,6 +3,7 @@
 \usepackage{appendix}
 \usepackage{minted}
 \usepackage{titlesec}
+\usepackage{xspace}
 \usepackage[margin=0.9in]{geometry}
 
 \renewcommand*{\thepart}{\arabic{part}}
@@ -10,6 +11,10 @@
 {\normalfont\Large\bf}{\partname\ \thepart:}{0.5em}{}[]
 \titleformat{\section}[hang]
 {\normalfont\normalsize\bf}{\thesection.}{0.5em}{}[]
+
+\setlength{\parindent}{0pt}
+
+\newcommand*{\thesisTXT}{{\tt thesis.txt}\xspace}
 
 \title{Information Theory - Assessment 1}
 \author{Clemens Wolff (s0942284)}
@@ -22,6 +27,18 @@
 \part{Source coding}
 
 \section{Character statistics}
+The Python program proposed in Appendix~\ref{app:ex1} computes a probability
+distribution over characters from a given input file by counting the number of
+occurrences $c_{x_n}$ of each character $x_n$ in the file and normalizing those
+counts by the total number of characters $C = \sum\limits_{x_n} c_{x_n}$ to
+obtain $p(x_n) = {1 \over C} \cdot c_{x_n}$.
+
+It then computes the entropy $H(X_n)$ of the distribution using the formula:
+\begin{center}
+    $H(X_n) = -\sum\limits_{x_n} p(x_n) \cdot log~p(x_n)$
+\end{center}
+Analysing the file \thesisTXT with this program we find $H(X_n) = 4.168$.
+
 \section{Bigram statistics}
 \section{Compression with known distributions}
 \section{Compression with limited precision header}
