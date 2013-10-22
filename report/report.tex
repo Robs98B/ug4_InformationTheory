@@ -37,8 +37,6 @@ counts by the total number of characters to obtain:
     $p(x_n) = {c_{x_n} \over\sum\limits_{x_n} c_{x_n}}$
 \end{center}
 
-Table~\ref{tbl:unigram-probs} shows this distribution for the file \thesisTXT.
-
 \begin{table}[ht]
 \centering
 \begin{tabular}{| c c | c c |}
@@ -65,13 +63,13 @@ $x_n$ & $p(x_n)$ & $x_n$ & $p(x_n)$ \\
 \label{tbl:unigram-probs}
 \end{table}
 
-Using this distribution, the program then computes the entropy $H(X_n)$:
+Using this distribution, the program then computes the entropy:
 
 \begin{center}
     $H(X_n) = -\sum\limits_{x_n} p(x_n) \cdot log~p(x_n)$
 \end{center}
 
-Analysing the file \thesisTXT with this program we find:
+For \thesisTXT, we have:
 
 \begin{center}
     $H(X_n) = 4.168$
