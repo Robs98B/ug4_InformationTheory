@@ -6,6 +6,7 @@
 \usepackage{minted}
 \usepackage{titlesec}
 \usepackage{xspace}
+\usepackage{textcomp}
 \usepackage{mathtools}
 
 \renewcommand*{\thepart}{\arabic{part}}
@@ -26,6 +27,7 @@
 \newcommand*{\norm}[1]{\ensuremath{\left|\left|#1\right|\right|}}
 \newcommand*{\lbr}{\ensuremath{\left\{}}
 \newcommand*{\rbr}{\ensuremath{\right\}}}
+\newcommand*{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
 
 \title{Information Theory - Assessment 1}
 \author{Clemens Wolff (s0942284)}
@@ -204,6 +206,46 @@ We thus need $b_q + 208 < 994,930$ bits in total to encode \thesisTXT.
 
 \section{Compression with adaptation}\label{sec:ex5}
 
+One way to avoid having to send a header describing the probabily distribution
+used to encode a file is to infer the distribution as we go along decoding. We
+can do this, for example, using the Laplace prediction rule
+\cite[p.~2]{it-assign}:
+\begin{equation}
+    p(x_{n+1}=a_i|x_{\le n}) = {k_i + 1 \over n + \norm{\mathcal{A}}}
+\end{equation}
+Where $k_i$ is the number of times character $a_i$ occurrs in the substring
+$x_0, x_1, \cdots, x_n$.
+The log probability of a file $f$ with characters $x_0, x_1, \cdots, x_N$ then
+is:
+\begin{equation}\label{eq:adaptive-unigram}
+    \log p(f) = \sum\limits_{n = 0}^N \log {k_{x_n} + 1 \over n + \norm{\mathcal{A}}}
+\end{equation}
+Appendix~\ref{app:ex5} implements a Python program that uses equations
+\eqref{eq:adaptive-unigram} and \eqref{eq:unigram-nbits} to compute the maximum
+number of bits $b_{a^1}$ required to encode a file with this scheme. For
+\thesisTXT we find that $b_{a^1} < 993,991$. Note that we save roughly 1,000
+bits over the unigram model in Section~\ref{sec:ex4} which is more than just the
+size of the header.
+
+Modifying this approach to make use of probabilities over character bigrams
+instead of just unigrams is trivial: just replace equation
+\eqref{eq:adaptive-unigram} with a bigram prediction model like the one
+presented by \cite[p.~3]{it-assign}:
+\begin{equation}\label{eq:adaptive-bigram}
+    p(x_{n+1}=a_i|x_{n} = a_j, x_{<n})
+    = {k_{i|j} + 1 \over n_j + \norm{\mathcal{A}}}
+\end{equation}
+Where $k_{i|j}$ is the number of times we have seen the bigram $a_ja_i$ in
+$x_0, x_1, \cdots, x_n$ and $n_j$ is the number of times we have conditioned a
+probability on $a_j$ so far.
+We can run the Python program of Appendix~\ref{app:ex5} using equations
+\eqref{eq:adaptive-bigram} and \eqref{eq:unigram-nbits} to compute the maximum
+number of bits $b_{a^2}$ required to encode a file with this scheme. For
+\thesisTXT we find that $b_{a^2} < 814,708$. This is only \textapprox 3,000 bits
+(or less than 1\%) more than the number we found in Section~\ref{sec:ex3} where
+the sender and receiver both knew the exact probability distribution used to
+encode the message!
+
 
 \part{Noisy channel coding}
 
@@ -295,6 +337,10 @@ X!3baA1z''. During the execution of the program, packets 2, 3, 4, 5, 6, 7, 8, 9,
 
 \subsection{ex4.py}\label{app:ex4}
 \inputminted{python}{../src/ex4.py}
+\newpage
+
+\subsection{ex5.py}\label{app:ex5}
+\inputminted{python}{../src/ex5.py}
 \newpage
 
 \subsection{ex6.py}\label{app:ex6}
