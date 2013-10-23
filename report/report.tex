@@ -193,21 +193,22 @@ maximum number of bits $b_q$ necessary to encode $f$ using an arithmetic coder.
 For \thesisTXT we get $b_q < 994,722$ bits.
 
 If we now assume that the alphabet $\mathcal{A} = \lbr a, b, \cdots, z,
-\textvisiblespace \rbr$ used in the file is known by everyone\footnotemark, we
+\textvisiblespace \rbr$ used in the file is known by everyone, we
 can represent the header in exactly $(\norm{\mathcal{A}} - 1) \times 8 = 26
 \times 8 = 208$ bits.\footnotemark
-\footnotetext{We can relax this assumption by increasing the header length by 8
-bits and defining some sequence of 8 bits as the ``end of header'' symbol. Using
-{\tt 00000000} for this symbol would be a good choice since the knowledge that a
-character in the encoded message has probability zero is useless. We would
-therefore never use this number to communicate the probability of an actual
-member of our probability distribution: {\tt 00000000} is therefore an
-unambiguous sign for the ``end of header'' symbol.}
+We thus need $b_q + 208 < 994,930$ bits in total to encode \thesisTXT.
+
 \footnotetext{We have 27 elements in $\mathcal{A}$ but since since probabilities
 sum to one we can omit the last element: it is simply one minus the sum of the
 other elements.}
 
-We thus need $b_q + 208 < 994,930$ bits in total to encode \thesisTXT.
+Note that we can relax the assumption that the alphabet is known to everyone by
+increasing the header length by 8 bits and defining some sequence of 8 bits as
+the ``end of header'' symbol. Using {\tt 00000000} for this symbol would be a
+good choice since the knowledge that a character in the encoded message has
+probability zero is useless. We would therefore never use this number to
+communicate the probability of an actual member of our probability distribution,
+making {\tt 00000000} an unambiguous sign for the ``end of header'' symbol.
 
 
 \section{Compression with adaptation}\label{sec:ex5}
