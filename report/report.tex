@@ -8,7 +8,13 @@
 \usepackage{xspace}
 \usepackage{textcomp}
 \usepackage{mathtools}
+\usepackage{lastpage}
+\usepackage{fancyhdr}
 
+\pagestyle{fancy}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot{\thepage/\pageref{LastPage}}
 \renewcommand*{\thepart}{\arabic{part}}
 \titleformat{\part}[hang]
 {\normalfont\Large\bf}{\partname\ \thepart:}{0.5em}{}[]
@@ -34,7 +40,7 @@
 \date{\vspace{-2em}}
 
 \begin{document}
-\maketitle
+\maketitle\thispagestyle{fancy}
 
 
 \part{Source coding}
