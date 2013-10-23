@@ -1,5 +1,6 @@
 \documentclass[10pt,a4paper,oneside,onecolumn]{article}
 
+\usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{appendix}
 \usepackage{minted}
@@ -42,10 +43,18 @@ The Python program proposed in Appendix~\ref{app:ex1} computes a probability
 distribution over characters from a given input file by counting the number of
 occurrences $c_{x_n}$ of each character $x_n$ in the file and normalizing those
 counts by the total number of characters to obtain:
-
-\begin{center}
-    $p(x_n) = {c_{x_n} \over\sum\limits_{x_n} c_{x_n}}$
-\end{center}
+\begin{equation}
+    p(x_n) = {c_{x_n} \over\sum\limits_{x_n} c_{x_n}}
+\end{equation}
+Using this distribution\footnotemark, the program then computes the entropy:
+\footnotetext{Sanity check: ``e'', ``t'', ``a'' and ``o'' are indeed the most
+common letters in English \cite{oed}.}
+\begin{equation}
+    H(X_n) = -\sum\limits_{x_n} p(x_n) \cdot \log p(x_n)
+\end{equation}
+For \thesisTXT, we have $H(X_n) = 4.168$ bits.\footnotemark
+\footnotetext{Sanity check: this is pretty close to the ``4.11'' in
+\cite[p.~7]{it4}.}
 
 \begin{table}[ht]
 \centering
@@ -73,31 +82,12 @@ $x_n$ & $p(x_n)$ & $x_n$ & $p(x_n)$ \\
 \label{tbl:unigram-probs}
 \end{table}
 
-Using this distribution\footnotemark, the program then computes the entropy:
-\footnotetext{Sanity check: ``e'', ``t'', ``a'' and ``o'' are indeed the most
-common letters in English \cite{oed}.}
-
-\begin{center}
-    $H(X_n) = -\sum\limits_{x_n} p(x_n) \cdot \log p(x_n)$
-\end{center}
-
-For \thesisTXT, we have:
-
-\begin{center}
-    $H(X_n) = 4.168$\footnotemark
-\end{center}
-\footnotetext{Sanity check: this is pretty close to the ``4.11'' in
-\cite[p.~7]{it4}.}
-
 \section{Bigram statistics}\label{sec:ex2}
 
 If we split a text into its constituent bigrams as a pre-procesing step, we can
 use the program of Section~\ref{sec:ex1} to compute the joint entropy $H(X_n,
-X_{n+1})$ of character bigrams in a given file. For \thesisTXT, we find:
-
-\begin{center}
-    $H(X_n, X_{n+1}) = 7.572 \approx 1.82H(X_n)$\footnotemark
-\end{center}
+X_{n+1})$ of character bigrams in a given file. For \thesisTXT, we
+find: $H(X_n, X_{n+1}) = 7.572 \approx 1.82H(X_n)$ bits.\footnotemark
 \footnotetext{Sanity check: this is pretty close to the ``7.6'' in
 \cite[p.~10]{it4}.}
 
@@ -110,119 +100,91 @@ English text which are not independent \cite[p.~22-24]{mackay}.
 Rearanging the chain rule of entropy \cite[p.~139]{mackay} reveals that we can
 also use the program of Section~\ref{sec:ex1} to compute the conditional
 entropy:
-
-\begin{center}
-    $H(X_{n+1} | X_n) = H(X_n, X_{n+1}) - H(X_n)$.
-\end{center}
-
-For \thesisTXT, we have:
-
-\begin{center}
-    $H(X_{n+1} | X_n) = 3.404$.
-\end{center}
-
+\begin{equation}
+    H(X_{n+1} | X_n) = H(X_n, X_{n+1}) - H(X_n)
+\end{equation}
+For \thesisTXT, we have: $H(X_{n+1} | X_n) = 3.404$ bits.
 
 \section{Compression with known distributions}\label{sec:ex3}
 
 We know \cite[p.~21]{it4} that the number of bits $b$ that an arithmetic coder
 will need to encode any sequence $s$ with probability $p(s)$ follows:
+\begin{equation}
+    b < -\log p(s) + 2
+\end{equation}
 
-\begin{center}
-    $b < -\log p(s) + 2$
-\end{center}
-
-If we assume that all characters in a file $f$ are generated independent and
-identically distributed (\iid) from $p(x_n)$ we can compute the probability of
-the entire file as:
-
-\begin{center}
-    $p(f) = \prod\limits_{x_n \in f} p(x_n)$
-    $\log p(f) = \sum\limits_{x_n \in f} \log p(x_n)$
-\end{center}
-
+If we assume that all characters $x_0, x_1, \cdots, x_N$ in a file $f$ are
+generated independent and identically distributed (\iid) from $p(x_n)$ we can
+compute the probability of the entire file as:
+\begin{equation}
+    p(f) = \prod\limits_{x_n \in f} p(x_n)
+\end{equation}
+Taking the logarithm on both sides gives:
+\begin{equation}\label{eq:unigram-logprob}
+    \log p(f) = \sum\limits_{x_n \in f} \log p(x_n)
+\end{equation}
 We can now compute the maximum number of bits $b_1$ that we will need to encode
 $f$ with an arithmetic coder using this unigram model:
-
-\begin{center}
-    $b_1 < -\log p(f) + 2 = 2 - \sum\limits_{x_n \in f} \log p(x_n)$
-\end{center}
-
-Performing this computation for \thesisTXT gives us:
-
-\begin{center}
-    $b_1 < 993,859$ bits
-\end{center}
+\begin{equation}\label{eq:unigram-nbits}
+    b_1 < -\log p(f) + 2 = 2 - \sum\limits_{x_n \in f} \log p(x_n)
+\end{equation}
+Performing this computation for \thesisTXT gives us: $b_1 < 993,859$ bits.
 
 If we instead assume that only $x_0$, the first character in $f$, is drawn all
 from $p(x_n)$ and all subsequent characters $x_1, x_2, \cdots, x_N$ are drawn
 from $p(x_{n+1} | x_n)$, we can write the probability of the file as:
-
-\begin{center}
-    $p(f) = p(x_0) \cdot \prod\limits_{n = 1}^{N} p(x_{n + 1} | p(x_n))$
-    $\log p(f) = \log p(x_0) + \sum\limits_{n = 1}^{N} \log p(x_{n + 1} | p(x_n))$
-\end{center}
-
-Using Bayes Rule we can re-write this as:
-
-\begin{center}
-    $\log p(f)
-    = \log p(x_0) + \sum\limits_{n = 1}^{N} \log {p(x_n, x_{n + 1}) \over p(x_n)}
-    = \log p(x_0) + \sum\limits_{n = 1}^{N} \log p(x_n, x_{n + 1}) - \log p(x_n)$
-\end{center}
-
-Like previously, we can now compute the maximum number of bits $b_2$ that an
-arithmetic coder will need to encode $f$ using this bigram model:
-
-\begin{center}
-    $b_2 < -\log p(f) + 2
-    = 2 - \log p(x_0) - \sum\limits_{n = 1}^{N} \log p(x_n, x_{n + 1}) + \log p(x_n)$
-\end{center}
-
-Performing this computation for \thesisTXT gives us:
-
-\begin{center}
-    $b_2 < 811,810$ bits
-\end{center}
-
-We use 13\% fewer bits using the bigram model instead of the unigram model!
+\begin{equation}
+    p(f) = p(x_0) \cdot \prod\limits_{n = 0}^{N - 1} p(x_{n + 1} | x_n)
+\end{equation}
+Taking the logarithm on both sides gives:
+\begin{equation}
+    \log p(f) = \log p(x_0) + \sum\limits_{n = 0}^{N - 1} \log p(x_{n + 1} | x_n)
+\end{equation}
+Using Bayes Rule and properties we can re-write this as:
+\begin{equation}
+    \log p(f)
+    = \log p(x_0) + \sum\limits_{n = 0}^{N - 1} \log {p(x_n, x_{n + 1}) \over p(x_n)}
+\end{equation}
+We can simplify this further by applying properties of the logarithm:
+\begin{equation}
+    \log p(f)
+    = \log p(x_0) + \sum\limits_{n = 0}^{N - 1} \log p(x_n, x_{n + 1}) - \log p(x_n)
+\end{equation}
+We can now compute the maximum number of bits $b_2$ that an arithmetic coder
+will need to encode $f$ using this bigram model:
+\begin{equation}
+    b_2 < -\log p(f) + 2
+    = 2 - \log p(x_0) - \sum\limits_{n = 0}^{N - 1} \log p(x_n, x_{n + 1}) + \log p(x_n)
+\end{equation}
+Performing this computation for \thesisTXT gives us: $b_2 < 811,810$ bits. We
+use 13\% fewer bits using the bigram model instead of the unigram model!
 
 
 \section{Compression with limited precision header}\label{sec:ex4}
 
 Let us now consider the following coding scheme presented in \cite{it-assign}:
 as previously, we will encode the file $f$ using a probability distribution
-$p(i)$ over character-unigrams in the file, but we now also include a description
-of this distribution as a header in the file. In order to simplify things, we
-round the probabilities $p(i)$ to the next largest power of two $q^*(i)$ that we
-can represent with 8 bits. Normalizing $q^*(i)$ to make the probabilities sum to
-1 gives us the distribution $q(i)$ used for encoding:
+$p(i)$ over character-unigrams in the file, but we now also include a
+description of this distribution as a header in the file. In order to simplify
+things, we round the probabilities $p(i)$ to the next largest power of two
+${\hat q}(i)$ that we can represent with 8 bits:
+\begin{equation}
+    {\hat q}(i) = {1 \over 2^8} \cdot \ceil{2^8 \cdot p(i)}
+\end{equation}
+Normalizing ${\hat q}(i)$ to make the probabilities sum to 1 gives us the
+distribution $q(i)$ used for encoding:
+\begin{equation}
+    q(i) = {1 \over \sum\limits_{j} {\hat q}(j)} \cdot {\hat q}(i)
+\end{equation}
+We now have all the informatino necessary to apply equations
+\eqref{eq:unigram-logprob} and \eqref{eq:unigram-nbits} in order to compute the
+maximum number of bits $b_q$ necessary to encode $f$ using an arithmetic coder.
+For \thesisTXT we get $b_q < 994,722$ bits.
 
-\begin{center}
-    $q^*(i) = {1 \over 2^8} \cdot \ceil{2^8 \cdot p(i)}$
-    $q(i) = {1 \over \sum\limits_{j} q^*(j)} \cdot q^*(i)$
-\end{center}
-
-As previously, the probability of the entire file $f$ is:
-
-\begin{center}
-    $p(f) = \prod\limits_{x_n \in f} q(x_n)$
-    $\log p(f) = \sum\limits_{x_n \in f} \log q(x_n)$
-\end{center}
-
-Using a similar approach to Section~\ref{sec:ex3} we can compute the maximum
-number of bits $b_q$ necessary to encode $f$ using an arithmetic coder:
-
-\begin{center}
-    $b_q < -\log p(f) + 2
-    = 2 - \sum\limits_{x_n \in f} \log q(x_n)$
-\end{center}
-
-Applying this to \thesisTXT we get $b_q < 994,722$ bits.
-
-If we now assume that the alphabet $\mathcal{A} = \lbr a, b, \cdots, z, `` ''
-\rbr$ used in the file is known by everyone, we can represent the header in
-exactly $(\norm{\mathcal{A}} - 1) \times 8 = 26 \times 8 = 208$
-bits\footnotemark.
+If we now assume that the alphabet $\mathcal{A} = \lbr a, b, \cdots, z,
+\textvisiblespace \rbr$ used in the file is known by everyone, we can represent
+the header in exactly $(\norm{\mathcal{A}} - 1) \times 8 = 26 \times 8 = 208$
+bits.\footnotemark
 \footnotetext{We have 27 elements in $\mathcal{A}$ but since since probabilities
 sum to one we can omit the last element: it is simply one minus the sum of the
 other elements.}
