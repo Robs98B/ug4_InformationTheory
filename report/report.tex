@@ -217,15 +217,17 @@ maximum number of bits $b_q$ necessary to encode $f$ using an arithmetic coder:
     = 2 - \sum\limits_{x_n \in f} \log q(x_n)$
 \end{center}
 
-If we assume that the alphabet $\mathcal{A} = \lbr a, b, \cdots, z, `` '' \rbr$
-used in the file is common knowledge, we can represent the header in exactly
-$(\norm{\mathcal{A}} - 1) \times 8 = 26 \times 8 = 208$ bits\footnotemark.
+Applying this to \thesisTXT we get $b_q < 994,722$ bits.
+
+If we now assume that the alphabet $\mathcal{A} = \lbr a, b, \cdots, z, `` ''
+\rbr$ used in the file is common knowledge, we can represent the header in
+exactly $(\norm{\mathcal{A}} - 1) \times 8 = 26 \times 8 = 208$
+bits\footnotemark.
 \footnotetext{We have 27 elements in $\mathcal{A}$ but since since probabilities
 sum to one we can omit the last element of the header (it is simply one minus
 the sum of the other elements), saving 8 bits.}
 
-Applying all of the above to \thesisTXT we get $b_q < 994,722$ bits. We thus
-need $b_q + 208 < 994,930$ bits in total to encode the file.
+We thus need $b_q + 208 < 994,930$ bits in total to encode the \thesisTXT.
 
 
 \section{Compression with adaptation}\label{sec:ex5}
