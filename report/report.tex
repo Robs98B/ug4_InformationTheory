@@ -5,6 +5,7 @@
 \usepackage{minted}
 \usepackage{titlesec}
 \usepackage{xspace}
+\usepackage{mathtools}
 
 \renewcommand*{\thepart}{\arabic{part}}
 \titleformat{\part}[hang]
@@ -13,12 +14,17 @@
 {\normalfont\normalsize\bf}{\thesection.}{0.5em}{}[]
 \setlength{\parindent}{0pt}
 
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
 \newcommand*{\thesisTXT}{{\tt thesis.txt}\xspace}
 \newcommand*{\receivedTXT}{{\tt received.txt}\xspace}
 \newcommand*{\packetsTXT}{{\tt packets.txt}\xspace}
 \newcommand*{\XOR}{{\tt XOR}\xspace}
 \newcommand*{\eg}{e.g.\xspace}
 \newcommand*{\iid}{i.i.d.\xspace}
+\newcommand*{\norm}[1]{\ensuremath{\left|\left|#1\right|\right|}}
+\newcommand*{\lbr}{\ensuremath{\left\{}}
+\newcommand*{\rbr}{\ensuremath{\right\}}}
 
 \title{Information Theory - Assessment 1}
 \author{Clemens Wolff (s0942284)}
@@ -180,7 +186,48 @@ Performing this computation for \thesisTXT gives us:
 
 We use 13\% fewer bits using the bigram model instead of the unigram model!
 
+
 \section{Compression with limited precision header}\label{sec:ex4}
+
+Let us now consider the following coding scheme presented in \cite{it-assign}:
+as previously, we will encode the file $f$ using a probability distribution
+$p(i)$ over character-unigrams in the file, but we now also include a description
+of this distribution as a header in the file. In order to simplify things, we
+round the probabilities $p(i)$ to the next largest power of two $q^*(i)$ that we
+can represent with 8 bits. Normalizing $q^*(i)$ to make the probabilities sum to
+1 gives us the distribution $q(i)$ used for encoding:
+
+\begin{center}
+    $q^*(i) = {1 \over 2^8} \cdot \ceil{2^8 \cdot p(i)}$
+    $q(i) = {1 \over \sum\limits_{j} q^*(j)} \cdot q^*(i)$
+\end{center}
+
+As previously, the probability of the entire file $f$ is:
+
+\begin{center}
+    $p(f) = \prod\limits_{x_n \in f} q(x_n)$
+    $\log p(f) = \sum\limits_{x_n \in f} \log q(x_n)$
+\end{center}
+
+Using a similar approach to Section~\ref{sec:ex3} we can thus compute the
+maximum number of bits $b_q$ necessary to encode $f$ using an arithmetic coder:
+
+\begin{center}
+    $b_q < -\log p(f) + 2
+    = 2 - \sum\limits_{x_n \in f} \log q(x_n)$
+\end{center}
+
+If we assume that the alphabet $\mathcal{A} = \lbr a, b, \cdots, z, `` '' \rbr$
+used in the file is common knowledge, we can represent the header in exactly
+$(\norm{\mathcal{A}} - 1) \times 8 = 26 \times 8 = 208$ bits\footnotemark.
+\footnotetext{We have 27 elements in $\mathcal{A}$ but since since probabilities
+sum to one we can omit the last element of the header (it is simply one minus
+the sum of the other elements), saving 8 bits.}
+
+Applying all of the above to \thesisTXT we get $b_q < 994,722$ bits. We thus
+need $b_q + 208 < 994,930$ bits in total to encode the file.
+
+
 \section{Compression with adaptation}\label{sec:ex5}
 
 
@@ -234,6 +281,13 @@ X!3baA1z''. During the execution of the program, packets 2, 3, 4, 5, 6, 7, 8, 9,
     Lecture at the University of Edinburgh,
     15-22 Oct 2013,
     available on-line at \url{http://goo.gl/Q2JkXm}
+
+\bibitem{it-assign}
+    I. Murray,
+    \emph{Information Theory — Assessed Assignment},
+    University of Edinburgh,
+    21 Oct 2013,
+    available on-line at \url{http://goo.gl/7QjRMc}
 
 \bibitem{oed}
     Oxford Dictionary,

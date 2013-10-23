@@ -74,6 +74,8 @@ class ProbabilityDistribution(object):
     def __init__(self, ps, xs=None):
         assert_is_probability_distribution(ps)
         xs = xs or ('x%d' % i for i in xrange(len(ps)))
+        self.symbols = xs
+        self.probabilities = ps
         self._d = dict(izip(xs, ps))
 
     def __repr__(self):
