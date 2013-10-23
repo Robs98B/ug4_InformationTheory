@@ -15,9 +15,9 @@ def _main(f):
     print 'header: nbits = %d' % ((nsymbols - 1) * header_bits_per_symbol)
 
     p = Counter(text).to_probability_distribution()
-    q = [round_pow2(pi, header_bits_per_symbol) for pi in p.probabilities]
+    q = [round_pow2(pi, header_bits_per_symbol) for pi in p.probabilities()]
     q = [qi / sum(q) for qi in q]
-    q = ProbabilityDistribution(q, p.symbols)
+    q = ProbabilityDistribution(q, p.symbols())
 
     logprob_q = sum(log(q(x)) for x in text)
     print 'message: nbits < %f' % (2 - logprob_q)
