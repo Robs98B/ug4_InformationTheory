@@ -24,7 +24,10 @@ class DefaultOptionParser(OptionParser):
 
     def _delegate_opts(self):
         if self.opts.run_tests:
-            self._caller._test()
+            try:
+                self._caller._test()
+            except AttributeError:
+                self._warning('no test method implemented: no tests were run')
             exit()
 
     def _validate_args(self):

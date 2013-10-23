@@ -11,10 +11,6 @@ def _main():
     print ''.join(xor(char, num) for (char, num) in izip(message, nums))
 
 
-def _test():
-    pass
-
-
 if __name__ == '__main__':
     from util import DefaultOptionParser
     from sys import modules

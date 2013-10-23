@@ -36,10 +36,6 @@ def _main(received_file, packets_file):
     print 'Decoded string:\t"%s"' % message
 
 
-def _test():
-    pass
-
-
 if __name__ == '__main__':
     from util import DefaultOptionParser
     from sys import modules

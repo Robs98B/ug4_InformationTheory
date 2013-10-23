@@ -16,10 +16,6 @@ def _main(f):
     print 'bigram:  nbits < %f' % (2 - logprob_bigram)
 
 
-def _test():
-    pass
-
-
 if __name__ == '__main__':
     from util import DefaultOptionParser
     from sys import modules

@@ -9,10 +9,6 @@ def _main(f):
     print 'H(Xn+1 | Xn) = %.3f' % (bigram_pd.entropy() - unigram_pd.entropy())
 
 
-def _test():
-    pass
-
-
 if __name__ == '__main__':
     from util import DefaultOptionParser
     from sys import modules
