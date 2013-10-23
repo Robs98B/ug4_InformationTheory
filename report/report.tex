@@ -209,8 +209,8 @@ As previously, the probability of the entire file $f$ is:
     $\log p(f) = \sum\limits_{x_n \in f} \log q(x_n)$
 \end{center}
 
-Using a similar approach to Section~\ref{sec:ex3} we can thus compute the
-maximum number of bits $b_q$ necessary to encode $f$ using an arithmetic coder:
+Using a similar approach to Section~\ref{sec:ex3} we can compute the maximum
+number of bits $b_q$ necessary to encode $f$ using an arithmetic coder:
 
 \begin{center}
     $b_q < -\log p(f) + 2
@@ -220,14 +220,14 @@ maximum number of bits $b_q$ necessary to encode $f$ using an arithmetic coder:
 Applying this to \thesisTXT we get $b_q < 994,722$ bits.
 
 If we now assume that the alphabet $\mathcal{A} = \lbr a, b, \cdots, z, `` ''
-\rbr$ used in the file is common knowledge, we can represent the header in
+\rbr$ used in the file is known by everyone, we can represent the header in
 exactly $(\norm{\mathcal{A}} - 1) \times 8 = 26 \times 8 = 208$
 bits\footnotemark.
 \footnotetext{We have 27 elements in $\mathcal{A}$ but since since probabilities
-sum to one we can omit the last element of the header (it is simply one minus
-the sum of the other elements), saving 8 bits.}
+sum to one we can omit the last element: it is simply one minus the sum of the
+other elements.}
 
-We thus need $b_q + 208 < 994,930$ bits in total to encode the \thesisTXT.
+We thus need $b_q + 208 < 994,930$ bits in total to encode \thesisTXT.
 
 
 \section{Compression with adaptation}\label{sec:ex5}
