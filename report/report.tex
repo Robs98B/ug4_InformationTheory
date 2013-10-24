@@ -29,6 +29,7 @@
 \newcommand*{\packetsTXT}{{\tt packets.txt}\xspace}
 \newcommand*{\XOR}{{\tt XOR}\xspace}
 \newcommand*{\eg}{e.g.\xspace}
+\newcommand*{\ie}{i.e.\xspace}
 \newcommand*{\iid}{i.i.d.\xspace}
 \newcommand*{\norm}[1]{\ensuremath{\left|\left|#1\right|\right|}}
 \newcommand*{\lbr}{\ensuremath{\left\{}}
@@ -193,9 +194,12 @@ maximum number of bits $b_q$ necessary to encode $f$ using an arithmetic coder.
 For \thesisTXT we get $b_q < 994,722$ bits.
 
 If we now assume that the alphabet $\mathcal{A} = \lbr a, b, \cdots, z,
-\textvisiblespace \rbr$ used in the file is known by everyone, we
-can represent the header in exactly $(\norm{\mathcal{A}} - 1) \times 8 = 26
-\times 8 = 208$ bits.\footnotemark
+\textvisiblespace \rbr$ used in the file is known by everyone (\ie all parties
+agree that if they see a header containing probabilities $p_0, p_1, \cdots,
+p_{\norm{\mathcal{A}}}$ they know which symbols to associate with the sequence
+of probabilities), we can represent the header in exactly $(\norm{\mathcal{A}} -
+1) \times 8 = 26 \times 8 = 208$ bits.\footnotemark
+
 We thus need $b_q + 208 < 994,930$ bits in total to encode \thesisTXT.
 
 \footnotetext{We have 27 elements in $\mathcal{A}$ but since since probabilities
@@ -203,12 +207,15 @@ sum to one we can omit the last element: it is simply one minus the sum of the
 other elements.}
 
 Note that we can relax the assumption that the alphabet is known to everyone by
-increasing the header length by 8 bits and defining some sequence of 8 bits as
-the ``end of header'' symbol. Using {\tt 00000000} for this symbol would be a
-good choice since the knowledge that a character in the encoded message has
-probability zero is useless. We would therefore never use this number to
-communicate the probability of an actual member of our probability distribution,
-making {\tt 00000000} an unambiguous sign for the ``end of header'' symbol.
+increasing the header length by $\norm{\mathcal{A}} \times N + 8$ bits. The
+header then contains each element in the alphabet encoded in some way using $N$
+bits per symbol (\eg using ASCII) followed by the probability of that element.
+We also define some sequence of 8 bits as the ``end of header'' symbol. Using
+{\tt 00000000} for this symbol would be a good choice since the knowledge that a
+character in the encoded message has probability zero is useless. We would
+therefore never use this number to communicate the probability of an actual
+member of our probability distribution, making {\tt 00000000} an unambiguous
+sign for the ``end of header'' symbol.
 
 
 \section{Compression with adaptation}\label{sec:ex5}
