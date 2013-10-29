@@ -28,15 +28,15 @@
 \newcommand*{\receivedTXT}{{\tt received.txt}\xspace}
 \newcommand*{\packetsTXT}{{\tt packets.txt}\xspace}
 \newcommand*{\XOR}{{\tt XOR}\xspace}
-\newcommand*{\eg}{e.g.\xspace}
-\newcommand*{\ie}{i.e.\xspace}
-\newcommand*{\iid}{i.i.d.\xspace}
+\newcommand*{\eg}{e.g.\@}
+\newcommand*{\ie}{i.e.\@}
+\newcommand*{\iid}{i.i.d.\@}
 \newcommand*{\norm}[1]{\ensuremath{\left|\left|#1\right|\right|}}
 \newcommand*{\lbr}{\ensuremath{\left\{}}
 \newcommand*{\rbr}{\ensuremath{\right\}}}
 \newcommand*{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
 
-\title{Information Theory - Assessment 1}
+\title{Information Theory -- Assessment 1}
 \author{Clemens Wolff (s0942284)}
 \date{\vspace{-2em}}
 
@@ -54,13 +54,13 @@ distribution $p$ over characters $x_n$ from a given input file by counting the
 number of occurrences $c_{x_n}$ of each character $x_n$ in the file and
 normalizing those counts by the total number of characters:
 \begin{equation}
-    p(x_n) = {c_{x_n} \over\sum\limits_{x_n} c_{x_n}}
+    p(x_n) = {c_{x_n} \over\sum\limits_{x_n} c_{x_n}}.
 \end{equation}
 Using this distribution\footnotemark, the program then computes the entropy:
 \footnotetext{Sanity check: ``e'', ``t'', ``a'' and ``o'' are indeed the most
 common letters in English \cite{oed}.}
 \begin{equation}
-    H(X_n) = -\sum\limits_{x_n} p(x_n) \cdot \log p(x_n)
+    H(X_n) = -\sum\limits_{x_n} p(x_n) \cdot \log p(x_n).
 \end{equation}
 For \thesisTXT, we have $H(X_n) = 4.168$ bits.\footnotemark
 \footnotetext{Sanity check: this is pretty close to the ``4.11'' in
@@ -95,7 +95,7 @@ $x_n$ & $p(x_n)$ & $x_n$ & $p(x_n)$ \\
 
 \section{Bigram statistics}\label{sec:ex2}
 
-If we split a text into its constituent bigrams as a pre-processing step, we can
+If we split a text into its constituent bigrams as a preprocessing step, we can
 use the program of Section~\ref{sec:ex1} to compute the joint entropy $H(X_n,
 X_{n+1})$ of character bigrams in a given file. For \thesisTXT, we
 find: $H(X_n, X_{n+1}) = 7.572 \approx 1.82H(X_n)$ bits.\footnotemark
@@ -112,7 +112,7 @@ Rearranging the chain rule of entropy \cite[p.~139]{mackay} reveals that we can
 also use the program of Section~\ref{sec:ex1} to compute the conditional
 entropy:
 \begin{equation}
-    H(X_{n+1} | X_n) = H(X_n, X_{n+1}) - H(X_n)
+    H(X_{n+1} | X_n) = H(X_n, X_{n+1}) - H(X_n).
 \end{equation}
 For \thesisTXT, we have: $H(X_{n+1} | X_n) = 3.404$ bits.
 
@@ -122,23 +122,23 @@ For \thesisTXT, we have: $H(X_{n+1} | X_n) = 3.404$ bits.
 We know \cite[p.~21]{it4} the number of bits $b$ that an arithmetic coder
 will need to encode any sequence $s$ that has probability $p(s)$:
 \begin{equation}
-    b < -\log p(s) + 2
+    b < -\log p(s) + 2.
 \end{equation}
 
 If we assume that all characters $x_0, x_1, \cdots, x_N$ in a file $f$ are
 generated independent and identically distributed (\iid) from $p(x_n)$ we can
 compute the probability of the entire file as:
 \begin{equation}
-    p(f) = \prod\limits_{x_n \in f} p(x_n)
+    p(f) = \prod\limits_{x_n \in f} p(x_n).
 \end{equation}
 Taking the logarithm on both sides gives:
 \begin{equation}\label{eq:unigram-logprob}
-    \log p(f) = \sum\limits_{x_n \in f} \log p(x_n)
+    \log p(f) = \sum\limits_{x_n \in f} \log p(x_n).
 \end{equation}
 We can now compute the maximum number of bits $b_1$ that we will need to encode
 $f$ with an arithmetic coder using a unigram model:
 \begin{equation}\label{eq:unigram-nbits}
-    b_1 < -\log p(f) + 2 = 2 - \sum\limits_{x_n \in f} \log p(x_n)
+    b_1 < -\log p(f) + 2 = 2 - \sum\limits_{x_n \in f} \log p(x_n).
 \end{equation}
 Performing this computation for \thesisTXT gives us: $b_1 < 993,859$ bits.
 
@@ -146,27 +146,31 @@ If we instead assume that only $x_0$, the first character in $f$, is drawn all
 from $p(x_n)$ and all subsequent characters $x_1, x_2, \cdots, x_N$ are drawn
 from $p(x_{n+1} | x_n)$, we can write the probability of the file as:
 \begin{equation}
-    p(f) = p(x_0) \cdot \prod\limits_{n = 0}^{N - 1} p(x_{n + 1} | x_n)
+    p(f) = p(x_0) \cdot \prod\limits_{n = 0}^{N - 1} p(x_{n + 1} | x_n).
 \end{equation}
 Taking the logarithm on both sides gives:
 \begin{equation}
-    \log p(f) = \log p(x_0) + \sum\limits_{n = 0}^{N - 1} \log p(x_{n + 1} | x_n)
+    \log p(f) =
+    \log p(x_0) + \sum\limits_{n = 0}^{N - 1} \log p(x_{n + 1} | x_n).
 \end{equation}
-Using Bayes Rule we can re-write this as:
+Using Bayes Rule we can rewrite this as:
 \begin{equation}
     \log p(f)
-    = \log p(x_0) + \sum\limits_{n = 0}^{N - 1} \log {p(x_n, x_{n + 1}) \over p(x_n)}
+    = \log p(x_0)
+    + \sum\limits_{n = 0}^{N - 1} \log {p(x_n, x_{n + 1}) \over p(x_n)}.
 \end{equation}
 We can simplify this further by applying properties of the logarithm:
 \begin{equation}
     \log p(f)
-    = \log p(x_0) + \sum\limits_{n = 0}^{N - 1} \log p(x_n, x_{n + 1}) - \log p(x_n)
+    = \log p(x_0)
+    + \sum\limits_{n = 0}^{N - 1} \log p(x_n, x_{n + 1}) - \log p(x_n).
 \end{equation}
 We can now compute the maximum number of bits $b_2$ that an arithmetic coder
 will need to encode $f$ using a bigram model:
 \begin{equation}
     b_2 < -\log p(f) + 2
-    = 2 - \log p(x_0) - \sum\limits_{n = 0}^{N - 1} \log p(x_n, x_{n + 1}) + \log p(x_n)
+    = 2 - \log p(x_0)
+    - \sum\limits_{n = 0}^{N - 1} \log p(x_n, x_{n + 1}) + \log p(x_n).
 \end{equation}
 Performing this computation for \thesisTXT gives us: $b_2 < 811,810$ bits. We
 use 13\% fewer bits if we base our arithmetic coder on a bigram model instead of
@@ -177,12 +181,12 @@ a unigram model!
 
 Let us now consider the coding scheme presented in \cite{it-assign}: as
 previously, we will encode the file $f$ using a probability distribution $p$
-over character-unigrams $i$ in the file, but we now also include a description
+over character unigrams $i$ in the file, but we now also include a description
 of this distribution as a header in the file. In order to simplify things, we
 round the probabilities $p(i)$ to the next largest power of two ${\hat q}(i)$
 that we can represent with 8 bits:
 \begin{equation}
-    {\hat q}(i) = {1 \over 2^8} \cdot \ceil{2^8 \cdot p(i)}
+    {\hat q}(i) = {1 \over 2^8} \cdot \ceil{2^8 \cdot p(i)}.
 \end{equation}
 Normalizing ${\hat q}(i)$ to make the probabilities sum to 1 gives us the
 distribution $q(i)$ used for encoding:
@@ -226,14 +230,15 @@ used to encode a file is to infer the distribution as we go along decoding. We
 can do this, for example, using the Laplace prediction rule
 \cite[p.~2]{it-assign}:
 \begin{equation}
-    p(x_{n+1}=a_i|x_{\le n}) = {k_i + 1 \over n + \norm{\mathcal{A}}}
+    p(x_{n+1}=a_i|x_{\le n}) = {k_i + 1 \over n + \norm{\mathcal{A}}},
 \end{equation}
-Where $k_i$ is the number of times character $a_i$ occurs in the sub-string
+where $k_i$ is the number of times character $a_i$ occurs in the sub-string
 $x_0, x_1, \cdots, x_n$.
 The log probability of a file $f$ with characters $x_0, x_1, \cdots, x_N$ then
 is:
 \begin{equation}\label{eq:adaptive-unigram}
-    \log p(f) = \sum\limits_{n = 0}^N \log {k_{x_n} + 1 \over n + \norm{\mathcal{A}}}
+    \log p(f) =
+    \sum\limits_{n = 0}^N \log {k_{x_n} + 1 \over n + \norm{\mathcal{A}}}.
 \end{equation}
 Appendix~\ref{app:ex5} implements a Python program that uses equations
 \eqref{eq:adaptive-unigram} and \eqref{eq:unigram-nbits} to compute the maximum
@@ -248,9 +253,9 @@ instead of just unigrams is trivial: just replace equation
 \cite[p.~3]{it-assign}:
 \begin{equation}\label{eq:adaptive-bigram}
     p(x_{n+1}=a_i|x_{n} = a_j, x_{<n})
-    = {k_{i|j} + 1 \over n_j + \norm{\mathcal{A}}}
+    = {k_{i|j} + 1 \over n_j + \norm{\mathcal{A}}},
 \end{equation}
-Where $k_{i|j}$ is the number of times we have seen the bigram $a_ja_i$ in
+where $k_{i|j}$ is the number of times we have seen the bigram $a_ja_i$ in
 $x_0, x_1, \cdots, x_n$ and $n_j$ is the number of times we have conditioned a
 probability on $a_j$ so far.
 We can run the Python program of Appendix~\ref{app:ex5} using equations
@@ -265,7 +270,7 @@ encode the message!
 \part{Noisy channel coding}
 
 
-\section{\XOR-ing packets}\label{sec:ex6}
+\section{\XOR--ing packets}\label{sec:ex6}
 
 Performing the \XOR operation between the string ``nutritious snacks'' and the
 bytes with numerical values ``59 6 17 0 83 84 26 90 64 70 25 66 86 82 90 95 75''
@@ -274,7 +279,7 @@ results in the string ``User: s5559183948''
 
 \section{Decoding packets from a digital fountain}\label{sec:ex7}
 
-A ``digital fountain'' is a code where parts of the source message are \XOR-ed
+A ``digital fountain'' is a code where parts of the source message are \XOR--ed
 together before being sent. Appendix~\ref{app:ex7} proposes a Python program
 that acts as a decoder for this scheme. On a high level, the program works as
 follows:
@@ -288,7 +293,7 @@ follows:
       message has to be the character with byte representation $v$.
 \item Find all the packets that used packet $n$ as part of their encoding.
       \XOR these packets with $v$ and delete $n$ from their encoding list.
-\item Repeat steps 2-4 until all the encoding lists are empty or until we find
+\item Repeat steps 2--4 until all the encoding lists are empty or until we find
       that the message can't be decoded.
 \end{enumerate}
 
@@ -314,14 +319,14 @@ and 23 unused).
     \emph{Practical compression 2: stream codes},
     Lecture at the University of Edinburgh,
     15-22 Oct 2013,
-    available on-line at \url{http://goo.gl/Q2JkXm}
+    available online at \url{http://goo.gl/Q2JkXm}
 
 \bibitem{it-assign}
     I. Murray,
     \emph{Information Theory — Assessed Assignment},
     University of Edinburgh,
     21 Oct 2013,
-    available on-line at \url{http://goo.gl/7QjRMc}
+    available online at \url{http://goo.gl/7QjRMc}
 
 \bibitem{oed}
     Oxford Dictionary,
