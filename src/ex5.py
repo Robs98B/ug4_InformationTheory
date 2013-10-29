@@ -4,6 +4,15 @@ from util import bigrams, log2
 
 
 def _main(f):
+    """
+    >>> _main('abaab')
+    unigram: nbits < 7.906891
+    bigram:  nbits < 7.584963
+
+    >>> _main('bababa')
+    unigram: nbits < 9.129283
+    bigram:  nbits < 6.584963
+    """
     text = ''.join(l.strip() for l in f)
     A = len(set(text))
 
@@ -18,8 +27,8 @@ def _main(f):
 
     k_bigram = defaultdict(int)
     njs = defaultdict(int)
-    logprob_bigram = 0
-    for (n, (ai, aj)) in enumerate(bigrams(text)):
+    logprob_bigram = log2(1.0 / A)
+    for (aj, ai) in bigrams(text):
         kij = k_bigram[(ai, aj)]
         nj = njs[aj]
         p = (kij + 1) / (nj + A)
