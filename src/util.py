@@ -115,12 +115,16 @@ def _entropy(ps, base=2):
     """
     >>> print '%.3f' % _entropy([0.0, 1.0])
     0.000
+
     >>> print '%.3f' % _entropy([0.5, 0.5])
     1.000
+
     >>> print '%.3f' % _entropy([0.2, 0.8])
     0.722
+
     >>> print '%.3f' % _entropy([0.8, 0.2])
     0.722
+
     >>> print '%.3f' % _entropy([0.5, 0.25, 0.125, 0.125])
     1.750
     """
