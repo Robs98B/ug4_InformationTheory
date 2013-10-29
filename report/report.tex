@@ -140,7 +140,7 @@ $f$ with an arithmetic coder using a unigram model:
 \begin{equation}\label{eq:unigram-nbits}
     b_1 < -\log p(f) + 2 = 2 - \sum\limits_{x_n \in f} \log p(x_n).
 \end{equation}
-Performing this computation for \thesisTXT gives us: $b_1 < 993,859$ bits.
+Performing this computation for \thesisTXT gives us: $b_1 < 1,433,834$ bits.
 
 If we instead assume that only $x_0$, the first character in $f$, is drawn all
 from $p(x_n)$ and all subsequent characters $x_1, x_2, \cdots, x_N$ are drawn
@@ -160,31 +160,31 @@ Using Bayes Rule we can rewrite this as:
     + \sum\limits_{n = 0}^{N - 1} \log {p(x_n, x_{n + 1}) \over p(x_n)}.
 \end{equation}
 We can simplify this further by applying properties of the logarithm:
-\begin{equation}
+\begin{equation}\label{eq:bigram-logprob}
     \log p(f)
     = \log p(x_0)
     + \sum\limits_{n = 0}^{N - 1} \log p(x_n, x_{n + 1}) - \log p(x_n).
 \end{equation}
 We can now compute the maximum number of bits $b_2$ that an arithmetic coder
 will need to encode $f$ using a bigram model:
-\begin{equation}
+\begin{equation}\label{eq:bigram-nbits}
     b_2 < -\log p(f) + 2
     = 2 - \log p(x_0)
     - \sum\limits_{n = 0}^{N - 1} \log p(x_n, x_{n + 1}) + \log p(x_n).
 \end{equation}
-Performing this computation for \thesisTXT gives us: $b_2 < 811,810$ bits. We
-use 13\% fewer bits if we base our arithmetic coder on a bigram model instead of
+Performing this computation for \thesisTXT gives us: $b_2 < 1,171,193$ bits. We
+use 18\% fewer bits if we base our arithmetic coder on a bigram model instead of
 a unigram model!
 
 
 \section{Compression with limited precision header}\label{sec:ex4}
 
-Let us now consider the coding scheme presented in \cite{it-assign}: as
-previously, we will encode the file $f$ using a probability distribution $p$
-over character unigrams $i$ in the file, but we now also include a description
-of this distribution as a header in the file. In order to simplify things, we
-round the probabilities $p(i)$ to the next largest power of two ${\hat q}(i)$
-that we can represent with 8 bits:
+Let us now consider the ``limited precision header'' coding scheme presented in
+\cite{it-assign}: as previously, we will encode the file $f$ using a probability
+distribution $p$ over character unigrams $i$ in the file, but we now also
+include a description of this distribution as a header in the file. In order to
+simplify things, we round the probabilities $p(i)$ to the next largest power of
+two ${\hat q}(i)$ that we can represent with 8 bits:
 \begin{equation}
     {\hat q}(i) = {1 \over 2^8} \cdot \ceil{2^8 \cdot p(i)}.
 \end{equation}
@@ -195,8 +195,8 @@ distribution $q(i)$ used for encoding:
 \end{equation}
 We now have all the information necessary to apply equations
 \eqref{eq:unigram-logprob} and \eqref{eq:unigram-nbits} in order to compute the
-maximum number of bits $b_q$ necessary to encode $f$ using an arithmetic coder.
-For \thesisTXT we get $b_q < 994,722$ bits.
+maximum number of bits $b_{q^1}$ necessary to encode $f$ using an arithmetic
+coder.  For \thesisTXT we get $b_{q^1} < 1,435,079$ bits.
 
 If we now assume that the alphabet $\mathcal{A} = \lbr a, b, \cdots, z,
 \textvisiblespace \rbr$ used in the file is known by everyone (\ie all parties
@@ -205,7 +205,7 @@ p_{\norm{\mathcal{A}}}$ they know which symbols to associate with the sequence
 of probabilities), we can represent the header in exactly $(\norm{\mathcal{A}} -
 1) \times 8 = 26 \times 8 = 208$ bits.\footnotemark
 
-We thus need $b_q + 208 < 994,930$ bits in total to encode \thesisTXT.
+We thus need $b_{q^1} + 208 < 1,435,287$ bits in total to encode \thesisTXT.
 
 \footnotetext{We have 27 elements in $\mathcal{A}$ but since since probabilities
 sum to one we can omit the last element: it is simply one minus the sum of the
@@ -222,6 +222,18 @@ therefore never use this number to communicate the probability of an actual
 member of our probability distribution, making {\tt 00000000} an unambiguous
 sign for the ``end of header'' symbol.
 
+If we want to use a limited precision header to encode a distribution over
+character bigrams, the header is much larger than in the unigram case: if we
+have an alphabet of $\norm{\mathcal{A}}$ characters, we have
+$\norm{\mathcal{A}}^2$ character bigrams (\ie we need to send
+$(\norm{\mathcal{A}} - 1)^2$ probabilities in the header -- a length of $5,824$
+bits in the case of \thesisTXT). Applying equations \eqref{eq:bigram-logprob}
+and \eqref{eq:bigram-nbits} to compute the maximum number of bits $b_{q^2}$
+necessary to encode \thesisTXT using $q$ shows that the penalty for using this
+incorrect distribution is also higher in the bigram case: we need $b_{q^2} <
+1,463,686$ bits to encode the contents of \thesisTXT\@.
+
+We thus need $b_{q^2} + 5,824 < 1,469,510$ bits in total to encode \thesisTXT.
 
 \section{Compression with adaptation}\label{sec:ex5}
 
@@ -243,7 +255,7 @@ is:
 Appendix~\ref{app:ex5} implements a Python program that uses equations
 \eqref{eq:adaptive-unigram} and \eqref{eq:unigram-nbits} to compute the maximum
 number of bits $b_{a^1}$ required to encode a file with this scheme. For
-\thesisTXT we find that $b_{a^1} < 993,991$. Note that we save roughly 1,000
+\thesisTXT we find that $b_{a^1} < 1,434,024$. Note that we save roughly 1,000
 bits over the unigram model in Section~\ref{sec:ex4} which is more than just the
 size of the header.
 
@@ -261,10 +273,10 @@ probability on $a_j$ so far.
 We can run the Python program of Appendix~\ref{app:ex5} using equations
 \eqref{eq:adaptive-bigram} and \eqref{eq:unigram-nbits} to compute the maximum
 number of bits $b_{a^2}$ required to encode a file with this scheme. For
-\thesisTXT we find that $b_{a^2} < 814,708$. This is only \textapprox 3,000 bits
-(or less than 1\%) more than the number we found in Section~\ref{sec:ex3} where
-the sender and receiver both knew the exact probability distribution used to
-encode the message!
+\thesisTXT we find that $b_{a^2} < 1,175,380$. This is only \textapprox 4,000
+bits (or less than 1\%) more than the number we found in Section~\ref{sec:ex3}
+where the sender and receiver both knew the exact probability distribution used
+to encode the message!
 
 
 \part{Noisy channel coding}
