@@ -23,11 +23,6 @@ def _main(f):
     print 'H(Xn) = %.3f' % unigram_pd.entropy()
 
 
-def _test():
-    import doctest
-    doctest.testmod()
-
-
 if __name__ == '__main__':
     from util import DefaultOptionParser
     from sys import modules

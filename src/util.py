@@ -1,5 +1,6 @@
 from __future__ import division
 from collections import defaultdict
+from doctest import testmod
 from itertools import izip
 from math import log
 from optparse import OptionParser
@@ -24,11 +25,10 @@ class DefaultOptionParser(OptionParser):
 
     def _delegate_opts(self):
         if self.opts.run_tests:
-            try:
-                self._caller._test()
-            except AttributeError:
-                self._warning('no test method implemented: no tests were run')
-            exit()
+            failure_count, test_count = testmod(self._caller)
+            if test_count == 0:
+                self._warning('no doc-tests implemented: no tests were run')
+            exit(failure_count > 0)
 
     def _validate_args(self):
         if len(self.args) < self._npositional:
