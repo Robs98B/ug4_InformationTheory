@@ -24,7 +24,13 @@ def _main(f):
     unigram header:  nbits = 8
     unigram message: nbits < 6.854762
     bigram header:  nbits = 24
-    bigram message: nbits < 5.204141
+    bigram message: nbits < 5.203200
+
+    >>> _main('bccccba')
+    unigram header:  nbits = 16
+    unigram message: nbits < 11.651541
+    bigram header:  nbits = 64
+    bigram message: nbits < 7.706959
     """
     header_bits_per_symbol = 8
 
@@ -43,7 +49,7 @@ def _main(f):
     print 'bigram header:  nbits = %d' % bigram_header_size
     p_bigram = Counter(text_bigrams).to_probability_distribution()
     q_bigram = approximate(p_bigram, header_bits_per_symbol)
-    bigram_textprob = q_bigram.conditional_logprob(p_unigram, text_bigrams)
+    bigram_textprob = q_bigram.conditional_logprob(q_unigram, text_bigrams)
     print 'bigram message: nbits < %f' % (2 - bigram_textprob)
 
 
