@@ -122,6 +122,10 @@ def bigrams(text):
     return izip(text, text[1:])
 
 
+def log2(x):
+    return log(x, 2)
+
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

@@ -1,5 +1,5 @@
-from math import ceil, log
-from util import Counter, ProbabilityDistribution
+from math import ceil
+from util import Counter, ProbabilityDistribution, log2
 
 
 def round_pow2(num, n=8):
@@ -18,7 +18,7 @@ def _main(f):
     q = [round_pow2(pi, header_bits_per_symbol) for pi in p.probabilities()]
     q = ProbabilityDistribution([qi / sum(q) for qi in q], p.symbols())
 
-    logprob_q = sum(log(q(x)) for x in text)
+    logprob_q = sum(log2(q(x)) for x in text)
     print 'message: nbits < %f' % (2 - logprob_q)
 
 

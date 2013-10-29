@@ -1,7 +1,6 @@
 from __future__ import division
 from collections import defaultdict
-from math import log
-from util import bigrams
+from util import bigrams, log2
 
 
 def _main(f):
@@ -13,7 +12,7 @@ def _main(f):
     for (n, ai) in enumerate(text):
         p = (k_unigram[ai] + 1) / (n + A)
         assert 0 <= p <= 1, 'probabilities must be in [0,1]'
-        logprob_unigram += log(p)
+        logprob_unigram += log2(p)
         k_unigram[ai] += 1
     print 'unigram: nbits < %f' % (2 - logprob_unigram)
 
@@ -25,7 +24,7 @@ def _main(f):
         nj = njs[aj]
         p = (kij + 1) / (nj + A)
         assert 0 <= p <= 1, 'probabilities must be in [0,1]'
-        logprob_bigram += log(p)
+        logprob_bigram += log2(p)
         k_bigram[(ai, aj)] += 1
         njs[aj] += 1
     print 'bigram:  nbits < %f' % (2 - logprob_bigram)

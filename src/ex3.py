@@ -1,18 +1,17 @@
-from math import log
-from util import Counter, bigrams
+from util import Counter, bigrams, log2
 
 
 def _main(f):
     text = ''.join(l.strip() for l in f)
     p_unigram = Counter(text).to_probability_distribution()
-    logprob_unigram = sum(log(p_unigram(x)) for x in text)
+    logprob_unigram = sum(log2(p_unigram(x)) for x in text)
     print 'unigram: nbits < %f' % (2 - logprob_unigram)
 
     text_bigrams = list(bigrams(text))
     p_bigram = Counter(text_bigrams).to_probability_distribution()
-    logprob_bigram = log(p_unigram(text[0]))
+    logprob_bigram = log2(p_unigram(text[0]))
     for (xm, xn) in text_bigrams:
-        logprob_bigram += log(p_bigram((xm, xn))) - log(p_unigram(xm))
+        logprob_bigram += log2(p_bigram((xm, xn))) - log2(p_unigram(xm))
     print 'bigram:  nbits < %f' % (2 - logprob_bigram)
 
 
