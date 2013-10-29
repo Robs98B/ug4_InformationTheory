@@ -6,6 +6,10 @@ def _main(f):
     >>> _main('abaab')
     unigram: nbits < 6.854753
     bigram:  nbits < 5.204141
+
+    >>> _main('bccccba')
+    unigram: nbits < 11.651484
+    bigram:  nbits < 7.718113
     """
     text = ''.join(l.strip() for l in f)
     p_unigram = Counter(text).to_probability_distribution()
