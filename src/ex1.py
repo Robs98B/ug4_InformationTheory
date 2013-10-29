@@ -5,12 +5,16 @@ def _main(f):
     """
     >>> _main('aaaaa')
     H(Xn) = 0.000
+
     >>> _main('aabb')
     H(Xn) = 1.000
+
     >>> _main('aaaab')
     H(Xn) = 0.722
+
     >>> _main('abbbb')
     H(Xn) = 0.722
+
     >>> _main('aaaabbcd')
     H(Xn) = 1.750
     """
