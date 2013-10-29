@@ -95,6 +95,15 @@ class ProbabilityDistribution(object):
     def entropy(self):
         return _entropy(self._d.values())
 
+    def logprob(self, seq):
+        return sum(log(self(x), 2) for x in seq)
+
+    def conditional_logprob(self, other, seq):
+        conditions = [a for (a, _) in seq]
+        return (self.logprob(seq)
+                - other.logprob(conditions)
+                + other.logprob(conditions[0]))
+
 
 def assert_is_probability_distribution(ps):
     assert '1.000' == '%.3f' % sum(ps), 'probabilities must sum to 1'
@@ -119,7 +128,7 @@ def _entropy(ps, base=2):
 
 
 def bigrams(text):
-    return izip(text, text[1:])
+    return zip(text, text[1:])
 
 
 def log2(x):

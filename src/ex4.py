@@ -1,5 +1,5 @@
 from math import ceil
-from util import Counter, ProbabilityDistribution, log2
+from util import Counter, ProbabilityDistribution, bigrams
 
 
 def round_pow2(num, n=8):
@@ -7,10 +7,10 @@ def round_pow2(num, n=8):
     return ceil(pow2 * num) / pow2
 
 
-def approximate_probability_distribution(p, nbits):
+def approximate(p, nbits):
     """
     >>> p = Counter('abaab').to_probability_distribution()
-    >>> q = approximate_probability_distribution(p, 8)
+    >>> q = approximate(p, 8)
     >>> q('a') == 154.0 / 257 and q('b') == 103.0 / 257
     True
     """
@@ -21,20 +21,30 @@ def approximate_probability_distribution(p, nbits):
 def _main(f):
     """
     >>> _main('abaab')
-    header:  nbits = 8
-    message: nbits < 6.854762
+    unigram header:  nbits = 8
+    unigram message: nbits < 6.854762
+    bigram header:  nbits = 24
+    bigram message: nbits < 5.204141
     """
     header_bits_per_symbol = 8
 
     text = ''.join(l.strip() for l in f)
     nsymbols = len(set(text))
-    print 'header:  nbits = %d' % ((nsymbols - 1) * header_bits_per_symbol)
+    unigram_header_size = (nsymbols - 1) * header_bits_per_symbol
+    print 'unigram header:  nbits = %d' % unigram_header_size
+    p_unigram = Counter(text).to_probability_distribution()
+    q_unigram = approximate(p_unigram, header_bits_per_symbol)
+    unigram_textprob = q_unigram.logprob(text)
+    print 'unigram message: nbits < %f' % (2 - unigram_textprob)
 
-    p = Counter(text).to_probability_distribution()
-    q = approximate_probability_distribution(p, header_bits_per_symbol)
-
-    logprob_q = sum(log2(q(x)) for x in text)
-    print 'message: nbits < %f' % (2 - logprob_q)
+    text_bigrams = bigrams(text)
+    nsymbols = len(set(text)) ** 2
+    bigram_header_size = (nsymbols - 1) * header_bits_per_symbol
+    print 'bigram header:  nbits = %d' % bigram_header_size
+    p_bigram = Counter(text_bigrams).to_probability_distribution()
+    q_bigram = approximate(p_bigram, header_bits_per_symbol)
+    bigram_textprob = q_bigram.conditional_logprob(p_unigram, text_bigrams)
+    print 'bigram message: nbits < %f' % (2 - bigram_textprob)
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-from util import Counter, bigrams, log2
+from util import Counter, bigrams
 
 
 def _main(f):
@@ -9,15 +9,13 @@ def _main(f):
     """
     text = ''.join(l.strip() for l in f)
     p_unigram = Counter(text).to_probability_distribution()
-    logprob_unigram = sum(log2(p_unigram(x)) for x in text)
-    print 'unigram: nbits < %f' % (2 - logprob_unigram)
+    unigram_textprob = p_unigram.logprob(text)
+    print 'unigram: nbits < %f' % (2 - unigram_textprob)
 
     text_bigrams = list(bigrams(text))
     p_bigram = Counter(text_bigrams).to_probability_distribution()
-    logprob_bigram = log2(p_unigram(text[0]))
-    for (xm, xn) in text_bigrams:
-        logprob_bigram += log2(p_bigram((xm, xn))) - log2(p_unigram(xm))
-    print 'bigram:  nbits < %f' % (2 - logprob_bigram)
+    bigram_textprob = p_bigram.conditional_logprob(p_unigram, text_bigrams)
+    print 'bigram:  nbits < %f' % (2 - bigram_textprob)
 
 
 if __name__ == '__main__':
