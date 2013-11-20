@@ -25,10 +25,13 @@ class DefaultOptionParser(OptionParser):
 
     def _delegate_opts(self):
         if self.opts.run_tests:
-            failure_count, test_count = testmod(self._caller)
-            if test_count == 0:
-                self._warning('no doc-tests implemented: no tests were run')
-            exit(failure_count > 0)
+            try:
+                exit(self._caller._test())
+            except AttributeError:
+                failure_count, test_count = testmod(self._caller)
+                if test_count == 0:
+                    self._warning('no doc-tests found: no tests were run')
+                exit(failure_count > 0)
 
     def _validate_args(self):
         if len(self.args) < self._npositional:
