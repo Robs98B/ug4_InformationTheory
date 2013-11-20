@@ -80,6 +80,9 @@ class Counter(defaultdict):
         ps = [self[x] / self.total() for x in xs]
         return ProbabilityDistribution(ps, xs)
 
+    def most_common_element(self):
+        return max(self, key=self.get)
+
 
 class ProbabilityDistribution(object):
     def __init__(self, ps, xs=None):
