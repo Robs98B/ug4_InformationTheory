@@ -35,9 +35,8 @@ class DefaultOptionParser(OptionParser):
 
     def _validate_args(self):
         if len(self.args) < self._npositional:
-            self._fatal('need to specify %d input file%s (got %d)\n%s'
+            self._fatal('need to specify %d input arguments (got %d)\n%s'
                         % (self._npositional,
-                           's' if self._npositional > 1 else '',
                            len(self.args),
                            self.get_usage()))
         if len(self.args) > self._npositional:
@@ -45,11 +44,20 @@ class DefaultOptionParser(OptionParser):
                           % ', '.join(self.args[self._npositional:]))
 
     def _delegate_args(self):
-        inputs = map(open, self.args[:self._npositional])
+        inputs = []
+        for arg in self.args[:self._npositional]:
+            try:
+                inputs.append(open(arg))
+            except:
+                inputs.append(float(arg))
         try:
             self._caller._main(*inputs)
         finally:
-            map(lambda f: f.close(), inputs)
+            for x in inputs:
+                try:
+                    x.close()
+                except:
+                    pass
 
     def process_args(self):
         self.opts, self.args = self.parse_args()
