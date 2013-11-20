@@ -227,11 +227,18 @@ character bigrams, the header is much larger than in the unigram case: if we
 have an alphabet of $\norm{\mathcal{A}}$ characters, we have
 $\norm{\mathcal{A}}^2$ character bigrams (\ie we need to send
 $(\norm{\mathcal{A}} - 1)^2$ probabilities in the header -- a length of $5,824$
-bits in the case of \thesisTXT). Applying equations \eqref{eq:bigram-logprob}
-and \eqref{eq:bigram-nbits} to compute the maximum number of bits $b_{q^2}$
-necessary to encode \thesisTXT using $q$ shows that the penalty for using this
-incorrect distribution is also higher in the bigram case: we need $b_{q^2} <
-1,463,686$ bits to encode the contents of \thesisTXT\@.
+bits in the case of \thesisTXT). Note that the joint (bigram) distribution is
+all we need to send as a header: we can infer the unigram probability
+distribution (used to get the probability of the first symbol in the file) from
+the joint distribution by marginalisation and given the bigram and unigram
+distributions we can easily compute the conditional distributions required for
+decoding subsequent bits of the message.
+
+Applying equations \eqref{eq:bigram-logprob} and \eqref{eq:bigram-nbits} to
+compute the maximum number of bits $b_{q^2}$ necessary to encode \thesisTXT
+using $q$ shows that the penalty for using this incorrect distribution is also
+higher in the bigram case: we need $b_{q^2} < 1,463,686$ bits to encode the
+contents of \thesisTXT\@.
 
 We thus need $b_{q^2} + 5,824 < 1,469,510$ bits in total to encode \thesisTXT.
 
