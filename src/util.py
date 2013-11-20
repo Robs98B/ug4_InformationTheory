@@ -162,6 +162,12 @@ def log2(x):
     return log(x, 2)
 
 
+def chunks(seq, length):
+    li = list(seq)
+    for i in xrange(0, len(li), length):
+        yield li[i:i + length]
+
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
