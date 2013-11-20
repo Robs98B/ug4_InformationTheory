@@ -61,7 +61,7 @@ class DefaultOptionParser(OptionParser):
                 continue
             except:
                 pass
-            inputs.append(inp)
+            inputs.append(arg)
         try:
             self._caller._main(*inputs)
         finally:
