@@ -7,7 +7,7 @@ class BinarySymmetricChannel(object):
     def __init__(self, f):
         self.f = f
 
-    def __call__(self, seq):
+    def transmit(self, seq):
         def _call(seq):
             for x in seq:
                 x = int(x)
@@ -114,9 +114,10 @@ class RepetitionHammingCode(HammingCode, RepetitionCode):
 
 def _main(flip_probability, message_length):
     message = [int(round(random())) for _ in xrange(message_length)]
+    channel = BinarySymmetricChannel(flip_probability)
     code = RepetitionHammingCode(nreps=3)
     encoded = code.encode(message)
-    received = encoded
+    received = channel.transmit(encoded)
     decoded = code.decode(received)
     print 'message:  %s' % ''.join(map(str, message))
     print 'encoded:  %s' % ''.join(map(str, encoded))

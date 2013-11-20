@@ -47,15 +47,18 @@ class DefaultOptionParser(OptionParser):
         inputs = []
         for arg in self.args[:self._npositional]:
             try:
-                inp = open(arg)
+                inputs.append(open(arg))
+                continue
             except:
                 pass
             try:
-                inp = int(arg)
+                inputs.append(int(arg))
+                continue
             except:
                 pass
             try:
-                inp = float(arg)
+                inputs.append(float(arg))
+                continue
             except:
                 pass
             inputs.append(inp)
