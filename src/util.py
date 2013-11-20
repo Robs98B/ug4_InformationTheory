@@ -171,6 +171,10 @@ def chunks(seq, length):
         yield li[i:i + length]
 
 
+def hamming_distance(A, B):
+    return sum(a != b for (a, b) in izip(A, B))
+
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
