@@ -454,6 +454,69 @@ R3 + H + I & 0.190476190476 \\
 \label{tbl:code-rates}
 \end{table}
 
+Let us now analyse the code that performed best in our experimental analysis a
+bit more rigorously: H + R3 (the 7,4-Hamming code where each bit gets repeated
+three times). Let us reason about performance taking a sequence we want to
+encode and send as an example. Say we want to send {\tt 0001}. The Hamming code
+transforms this into {\tt 0001011}. The repetition code then transforms this
+into {\tt 000 000 000 111 000 111 111} which is the message we will transmit.
+Assume that we send the message over a Binary Symmetric Channel with bit-flip
+probability f.
+
+When will the channel not garble the message in a way that will lead to a
+decoding error? In order to reason about this probability, let us focus on the 7
+length 3 sub-blocks of the encoded message first.
+
+Clearly, if the channel does not flip any bits, we will be able to recover the
+original message. This happens with probability $(1-f)^3$ for any 3-sub-block.
+
+Our outer (repetition) code will correct any single bit error in any
+3-sub-block. We will experience this situation with probability ${3 \choose 1}
+f(1-f)^2 = 3f(1-f)^2 = 1 - (1-f)^2(1 - 4f)$.
+
+This means that any 3-sub-block has probability $p_3$ of being corrupted in a
+way that will elude out outer code.
+\begin{equation}
+p_3 = 1 - (1-f)^3 - 3f(1-f)^2.
+\end{equation}
+
+Reminding ourselves that our message consists of seven 3-sub-blocks, we can
+express the probability that exactly x of these blocks are corrupted as
+$p_{n=x} = {7 \choose x} p_3^x(1-p_3)^{7-x}$.
+
+If one or less 3-sub-blocks in the message are corrupted, our inner (Hamming)
+code can recover this. The probability of this event occuring is $p_{n \leq 1} =
+p_{n=0} + p_{n=1}$. This is also the probability that our channel will not
+garble the message in an unrecoverable way. Whence we derive the message
+recovery probability $p_r$.
+\begin{equation}\label{eq:precover}
+\begin{split}
+p_r = p_{n \leq 1} =
+{7 \choose 0} p_3^0(1-p_3)^{7-0} + {7 \choose 1} p_3^1(1-p_3)^{7-1} \\
+= (1-p_3)^7 + 7p_3(1-p_3)^6 = (1-p_3)^6(1+6p_3) \\
+= ((1-f)^3+3f(1-f)^2)^6(1+6(1 - (1-f)^3 - 3f(1-f)^2))
+\end{split}
+\end{equation}
+
+Table~\ref{tbl:precover} evaluates Equation~\eqref{eq:precover} for various
+values of $f$.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{| c | c |}
+\hline
+$f$ & $p_r$ \\
+\hline
+0.4   & 0.230 \\
+0.1   & 0.985 \\
+0.01  & 0.999 \\
+0.001 & 0.999 \\
+\hline
+\end{tabular}
+\caption{Message recovery probability}
+\label{tbl:precover}
+\end{table}
+
 
 \begin{thebibliography}{9}
 
