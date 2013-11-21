@@ -330,8 +330,15 @@ This section investigates whether it is possible to combine various simple error
 correcting codes for the Binary Symmetric Channel (BSC) in order to achieve
 higher performance than using only a single code.
 
-We will consider the following three coding schemes: 7,4-Hamming coding (H),
-3-repetition coding (R3) and 3-depth code ``interleaving'' (I).
+We can defined a composite AB code based on codes A and B as follows:
+\begin{itemize}
+\item \emph{Encoding} Encode the message $M$ with A to get $M_A$, use $B$ to
+encode $M_A$ to get $M_{AB}$ which is the transmitted bit-string.
+\item \emph{Decoding} Decode the received message $R$ with B to get $R_B$ and
+decode that in turn with A to get the decoded message $R_BA$.
+\end{itemize}
+We will consider the 7,4-Hamming coding (H), 3-repetition coding (R3) and
+3-depth code ``interleaving'' (I) for our base codes.
 
 7,4-Hamming coding sends message bits $m_1, m_2, m3_, m_4$ over the BSC,
 protected by three parity bits $p_1 = m_1 \oplus m_2 \oplus m_4, p_2 = m_1
@@ -340,9 +347,10 @@ correct up to one error in the message via syndrome decoding. The code has rate
 ${4 \over 7}$.
 
 R-repetition coding sends message bit $m_1$ protected by R parity bits $p_i =
-m_1$. The receiver can correct up to ${R \over 2} - 1$ errors in the message via
-majority vote decoding: decode any sequence of R received bits as whichever
-element in the sequence is most common. The code has rate ${1 \over R}$.
+m_1$. The receiver can correct up to $\left\lceil{R \over 2}\right\rceil - 1$
+errors in the message via majority vote decoding: decode any sequence of R
+received bits as whichever element in the sequence is most common. The code has
+rate ${1 \over R}$.
 
 Combining a 7,4-Hamming code with a R-reptition code sends each of the
 Hamming-code bits R times or encodes each of the R repetition-code bits with 7
@@ -363,17 +371,19 @@ interleaving code with an underlying code U does not add any additional bits to
 the message, the rate of the interleaving code is therefore the rate of U.
 
 In order to evaluate the performance of the codes, we encode and send 500 random
-messages over three BSCs with error probabilities $f = 0.01, 0.1, 0.4$
-respectively. The estimate of the bit-error rate of one of our coding schemes is
+messages over three BSCs with error probabilities $f = 0.001, 0.01, 0.1, 0.4$
+respectively. The estimate of the bit-error rate of any of our coding schemes is
 the average Hamming distance between the sent and received messages over the
 average message length. Table~\ref{tbl:code-errors} summarizes the findings: we
 do not manage to outperform Hamming codes or repetition codes in any interesting
 way shape or form. Combining Hamming and repetition codes leads to a lower
 bit-error probability if compared to using a Hamming code on its own, but the
 resulting code still has a poorer bit-error probability and rate than a simple
-repetition code. The poor performance of the interleaving code can be explained
-by the memoryless nature of the BSC: unlike many real-world channels, the BSC
-adds noise at random to messages sent through it, not in bursts.
+repetition code. The interleaving code does not affect performance. This can
+probably be explained by the memoryless nature of the BSC: unlike many
+real-world channels, the BSC adds noise at random to messages sent through it,
+not in bursts; we thus do not expect interleaving to improve performance on
+average.
 
 \begin{table}[ht]
 \centering
