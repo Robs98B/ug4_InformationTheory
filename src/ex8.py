@@ -33,7 +33,7 @@ class Code(object):
     def rate(self, seq):
         return len(list(seq)) / len(self.encode(seq))
 
-    def analyze_performance(self, channel, message_length, num_trials=10):
+    def analyze_performance(self, channel, message_length, num_trials=100):
         errors = 0
         for _ in xrange(num_trials):
             message = [int(round(random()))
@@ -129,37 +129,76 @@ class RepetitionCode(Code):
         return list(_decode(seq))
 
 
-class RepetitionHammingCode(HammingCode, RepetitionCode):
-    def __init__(self, nreps):
-        HammingCode.__init__(self)
-        RepetitionCode.__init__(self, nreps)
+class InterleavingCode(Code):
+    def __init__(self, depth):
+        self._d = depth
 
     def encode(self, seq):
-        return RepetitionCode.encode(self, HammingCode.encode(self, seq))
+        """
+        >>> ic = InterleavingCode(4)
+        >>> ic.encode([1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1])
+        [1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1]
+        """
+        def _encode(li):
+            ncols = len(li) // self._d
+            lim = ncols * self._d
+            for chunk in zip(*chunks(li[:lim], self._d)):
+                for x in chunk:
+                    yield x
+            for x in li[lim:]:
+                yield x
+        return list(_encode(list(seq)))
 
     def decode(self, seq):
-        return HammingCode.decode(self, RepetitionCode.decode(self, seq))
+        """
+        >>> ic = InterleavingCode(4)
+        >>> ic.decode([1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1])
+        [1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1]
+        """
+        def _decode(li):
+            ncols = len(li) // self._d
+            lim = ncols * self._d
+            for chunk in zip(*chunks(li[:lim], ncols)):
+                for x in chunk:
+                    yield x
+            for x in li[lim:]:
+                yield x
+        return list(_decode(list(seq)))
 
 
-def _main(code_type, max_message_length=10000):
-    code_type = code_type.lower()
-    with open(code_type + '_code_performance.csv', 'wa') as f:
+class IRHCode(InterleavingCode, HammingCode, RepetitionCode):
+    def __init__(self, nreps, depth):
+        HammingCode.__init__(self)
+        RepetitionCode.__init__(self, nreps)
+        InterleavingCode.__init__(self, depth)
+
+    def encode(self, seq):
+        seq = RepetitionCode.encode(self, seq)
+        seq = HammingCode.encode(self, seq)
+        seq = InterleavingCode.encode(self, seq)
+        return seq
+
+    def decode(self, seq):
+        seq = InterleavingCode.decode(self, seq)
+        seq = HammingCode.decode(self, seq)
+        seq = RepetitionCode.decode(self, seq)
+        return seq
+
+
+def _main(code_type, msg_lengths=None):
+    msg_lengths = msg_lengths or [4 * x for x in (1, 10, 100, 1000, 10000)]
+    code = IRHCode(3, 3)
+    with open(code_type + '.csv', 'w') as f:
         f.write('# channel flip probability,'
                 '# message length,'
                 '# bit error probability,'
                 '# rate\n')
         for flip_probability in (0.4, 0.1, 0.01):
             bsc = BinarySymmetricChannel(flip_probability)
-            if code_type == 'hamming':
-                code = HammingCode()
-            elif code_type.startswith('repetition'):
-                code = RepetitionCode(int(code_type.split('-')[1]))
-            elif code_type.startswith('hr'):
-                code = RepetitionHammingCode(int(code_type.split('-')[1]))
-            for message_length in xrange(4, max_message_length, 4):
-                error, rate = code.analyze_performance(bsc, message_length)
+            for msg_length in msg_lengths:
+                error, rate = code.analyze_performance(bsc, msg_length)
                 f.write('%s,%s,%s,%s\n'
-                        % (flip_probability, message_length, error, rate))
+                        % (flip_probability, msg_length, error, rate))
 
 
 if __name__ == '__main__':

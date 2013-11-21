@@ -326,7 +326,92 @@ and 23 unused).
 
 \section{Creating a code}\label{sec:ex8}
 
-to do % TODO
+This section investigates whether it is possible to combine various simple error
+correcting codes for the Binary Symmetric Channel (BSC) in order to achieve
+higher performance than using only a single code.
+
+We will consider the following three coding schemes: 7,4-Hamming coding (H),
+3-repetition coding (R3) and 3-depth code ``interleaving'' (I).
+
+7,4-Hamming coding sends message bits $m_1, m_2, m3_, m_4$ over the BSC,
+protected by three parity bits $p_1 = m_1 \oplus m_2 \oplus m_4, p_2 = m_1
+\oplus m_3 \oplus m_4, p3 = m_2 \oplus m_3 \oplus m_4$. The receiver of the can
+correct up to one error in the message via syndrome decoding. The code has rate
+${4 \over 7}$.
+
+R-repetition coding sends message bit $m_1$ protected by R parity bits $p_i =
+m_1$. The receiver can correct up to ${R \over 2} - 1$ errors in the message via
+majority vote decoding: decode any sequence of R received bits as whichever
+element in the sequence is most common. The code has rate ${1 \over R}$.
+
+Combining a 7,4-Hamming code with a R-reptition code sends each of the
+Hamming-code bits R times or encodes each of the R repetition-code bits with 7
+Hamming-code bits.  The rate of this combined code is therefore ${4 \over 7
+\times R}$.
+
+D-depth interleaving arranges message bits $m_1, m_2, \cdots, m_n$ into an array
+with D rows and ${n \over D}$ columns, filling each column with message bits
+before starting a new row. The elements in the array are then sent column-wise
+rather than row-wise over the channel.  Decoding repeats this process and
+therewith undoes it. The code does not correct any errors itself, but using the
+code to encode a message already encoded with some other underlying error
+correction code U helps in dealing with multiple errors occuring in a row
+(``burst errors''): interleaving spreads message and parity bits more appart
+which decreases the likelihood that too many errors accumulate in a certain span
+and therewith overwhelm the error correction capabilities of U. Using an
+interleaving code with an underlying code U does not add any additional bits to
+the message, the rate of the interleaving code is therefore the rate of U.
+
+In order to evaluate the performance of the codes, we encode and send 500 random
+messages over three BSCs with error probabilities $f = 0.01, 0.1, 0.4$
+respectively. The estimate of the bit-error rate of one of our coding schemes is
+the average Hamming distance between the sent and received messages over the
+average message length. Table~\ref{tbl:code-errors} summarizes the findings: we
+do not manage to outperform Hamming codes or repetition codes in any interesting
+way shape or form. Combining Hamming and repetition codes leads to a lower
+bit-error probability if compared to using a Hamming code on its own, but the
+resulting code still has a poorer bit-error probability and rate than a simple
+repetition code. The poor performance of the interleaving code can be explained
+by the memoryless nature of the BSC: unlike many real-world channels, the BSC
+adds noise at random to messages sent through it, not in bursts.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{| c | c | c |}
+\hline
+$f$ & Code & Bit-error probability \\
+\hline
+0.4 & H          & 0.42286325 \\
+    & R3         & 0.3521785 \\
+    & R3 + I     & 0.3520545 \\
+    & H + I      & 0.4229125 \\
+    & H + R3     & 0.3830005 \\
+    & R3 + H     & 0.389885 \\
+    & H + R3 + I & 0.3826605 \\
+    & R3 + H + I & 0.389411 \\
+\hline
+0.1 & H          & 0.11281175 \\
+    & R3         & 0.02810925 \\
+    & R3 + I     & 0.0279555 \\
+    & H + I      & 0.1129535 \\
+    & H + R3     & 0.029242 \\
+    & R3 + H     & 0.06481325 \\
+    & H + R3 + I & 0.02926425 \\
+    & R3 + H + I & 0.064571 \\
+\hline
+0.01 & H          & 0.010282 \\
+     & R3         & 0.00028925 \\
+     & R3 + I     & 0.00030425 \\
+     & H + I      & 0.01027775 \\
+     & H + R3     & 0.00031425 \\
+     & R3 + H     & 0.0051465 \\
+     & H + R3 + I & 0.00030175 \\
+     & R3 + H + I & 0.005052 \\
+\hline
+\end{tabular}
+\caption{Average code bit error probability}
+\label{tbl:code-errors}
+\end{table}
 
 
 \begin{thebibliography}{9}
