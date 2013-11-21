@@ -174,13 +174,13 @@ class IRHCode(InterleavingCode, HammingCode, RepetitionCode):
 
     def encode(self, seq):
         seq = RepetitionCode.encode(self, seq)
-        seq = HammingCode.encode(self, seq)
-        seq = InterleavingCode.encode(self, seq)
+        #seq = HammingCode.encode(self, seq)
+        #seq = InterleavingCode.encode(self, seq)
         return seq
 
     def decode(self, seq):
-        seq = InterleavingCode.decode(self, seq)
-        seq = HammingCode.decode(self, seq)
+        #seq = InterleavingCode.decode(self, seq)
+        #seq = HammingCode.decode(self, seq)
         seq = RepetitionCode.decode(self, seq)
         return seq
 
@@ -193,7 +193,7 @@ def _main(code_type, msg_lengths=None):
                 '# message length,'
                 '# bit error probability,'
                 '# rate\n')
-        for flip_probability in (0.4, 0.1, 0.01):
+        for flip_probability in (0.4, 0.1, 0.01, 0.001):
             bsc = BinarySymmetricChannel(flip_probability)
             for msg_length in msg_lengths:
                 error, rate = code.analyze_performance(bsc, msg_length)
