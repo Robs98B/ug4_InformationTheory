@@ -140,7 +140,8 @@ $f$ with an arithmetic coder using a unigram model:
 \begin{equation}\label{eq:unigram-nbits}
     b_1 < -\log p(f) + 2 = 2 - \sum\limits_{x_n \in f} \log p(x_n).
 \end{equation}
-Performing this computation for \thesisTXT gives us: $b_1 < 1,433,834$ bits.
+Performing this computation for \thesisTXT gives us: $b_1 < 1,433,834$
+bits.\footnote{We round all $b$ up because we can't have fractional bits.}
 
 If we instead assume that only $x_0$, the first character in $f$, is drawn all
 from $p(x_n)$ and all subsequent characters $x_1, x_2, \cdots, x_N$ are drawn
@@ -374,16 +375,16 @@ In order to evaluate the performance of the codes, we encode and send 500 random
 messages over three BSCs with error probabilities $f = 0.001, 0.01, 0.1, 0.4$
 respectively. The estimate of the bit-error rate of any of our coding schemes is
 the average Hamming distance between the sent and received messages over the
-average message length. Table~\ref{tbl:code-errors} summarizes the findings: we
-do not manage to outperform Hamming codes or repetition codes in any interesting
-way shape or form. Combining Hamming and repetition codes leads to a lower
-bit-error probability if compared to using a Hamming code on its own, but the
-resulting code still has a poorer bit-error probability and rate than a simple
-repetition code. The interleaving code does not affect performance. This can
-probably be explained by the memoryless nature of the BSC: unlike many
-real-world channels, the BSC adds noise at random to messages sent through it,
-not in bursts; we thus do not expect interleaving to improve performance on
-average.
+average message length. Tables~\ref{tbl:code-errors} and~\ref{tbl:code-rate}
+summarize the findings: we do not manage to outperform Hamming codes or
+repetition codes in any interesting way shape or form. Combining Hamming and
+repetition codes leads to a lower bit-error probability if compared to using a
+Hamming code on its own, but the resulting code still has a poorer bit-error
+probability and rate than a simple repetition code. The interleaving code does
+not affect performance. This can probably be explained by the memoryless nature
+of the BSC: unlike many real-world channels, the BSC adds noise at random to
+messages sent through it, not in bursts; we thus do not expect interleaving to
+improve performance on average.
 
 \begin{table}[ht]
 \centering
@@ -427,8 +428,29 @@ $f$ & Code & Bit-error probability \\
       & H + R3 + I & 0.0000025 \\
       & R3 + H + I & 0.000508 \\
 \hline
+
 \end{tabular}
 \caption{Average code bit error probability}
+\label{tbl:code-errors}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{| c | c |}
+\hline
+Code & Rate \\
+\hline
+H          & 0.571428571429 \\
+R3         & 0.333333333333 \\
+R3 + I     & 0.333333333333 \\
+H + I      & 0.571428571429 \\
+H + R3     & 0.190476190476 \\
+R3 + H     & 0.190476190476 \\
+H + R3 + I & 0.190476190476 \\
+R3 + H + I & 0.190476190476 \\
+\hline
+\end{tabular}
+\caption{Average code rate}
 \label{tbl:code-errors}
 \end{table}
 
