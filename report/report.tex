@@ -62,7 +62,7 @@ common letters in English \cite{oed}.}
 \begin{equation}
     H(X_n) = -\sum\limits_{x_n} p(x_n) \cdot \log p(x_n).
 \end{equation}
-For \thesisTXT, we have $H(X_n) = 4.168$ bits.\footnotemark
+For \thesisTXT, we have $H(X_n) = 4.17$ bits.\footnotemark
 \footnotetext{Sanity check: this is pretty close to the ``4.11'' in
 \cite[p.~7]{it4}.}
 
@@ -98,7 +98,7 @@ $x_n$ & $p(x_n)$ & $x_n$ & $p(x_n)$ \\
 If we split a text into its constituent bigrams as a preprocessing step, we can
 use the program of Section~\ref{sec:ex1} to compute the joint entropy $H(X_n,
 X_{n+1})$ of character bigrams in a given file. For \thesisTXT, we
-find: $H(X_n, X_{n+1}) = 7.572 \approx 1.82H(X_n)$ bits.\footnotemark
+find: $H(X_n, X_{n+1}) = 7.57 \approx 1.82H(X_n)$ bits.\footnotemark
 \footnotetext{Sanity check: this is pretty close to the ``7.6'' in
 \cite[p.~10]{it4}.}
 
@@ -114,7 +114,7 @@ entropy:
 \begin{equation}
     H(X_{n+1} | X_n) = H(X_n, X_{n+1}) - H(X_n).
 \end{equation}
-For \thesisTXT, we have: $H(X_{n+1} | X_n) = 3.404$ bits.
+For \thesisTXT, we have: $H(X_{n+1} | X_n) = 3.40$ bits.
 
 
 \section{Compression with known distributions}\label{sec:ex3}
