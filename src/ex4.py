@@ -21,22 +21,22 @@ def approximate(p, nbits):
 def _main(f):
     """
     >>> _main('abaab')
-    unigram header:  nbits = 8
+    unigram header:  nbits = 16
     unigram message: nbits < 6.854762
-    bigram header:  nbits = 24
+    bigram header:  nbits = 32
     bigram message: nbits < 5.203200
 
     >>> _main('bccccba')
-    unigram header:  nbits = 16
+    unigram header:  nbits = 24
     unigram message: nbits < 11.651541
-    bigram header:  nbits = 64
+    bigram header:  nbits = 72
     bigram message: nbits < 7.706959
     """
     header_bits_per_symbol = 8
 
     text = ''.join(l.strip() for l in f)
     nsymbols = len(set(text))
-    unigram_header_size = (nsymbols - 1) * header_bits_per_symbol
+    unigram_header_size = nsymbols * header_bits_per_symbol
     print 'unigram header:  nbits = %d' % unigram_header_size
     p_unigram = Counter(text).to_probability_distribution()
     q_unigram = approximate(p_unigram, header_bits_per_symbol)
@@ -45,7 +45,7 @@ def _main(f):
 
     text_bigrams = bigrams(text)
     nsymbols = len(set(text)) ** 2
-    bigram_header_size = (nsymbols - 1) * header_bits_per_symbol
+    bigram_header_size = nsymbols * header_bits_per_symbol
     print 'bigram header:  nbits = %d' % bigram_header_size
     p_bigram = Counter(text_bigrams).to_probability_distribution()
     q_bigram = approximate(p_bigram, header_bits_per_symbol)
