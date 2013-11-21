@@ -454,7 +454,7 @@ R3 + H + I & 0.190476190476 \\
 \label{tbl:code-rates}
 \end{table}
 
-Let us now analyse the code that performed best in our experimental analysis a
+Let us now analyse one of the better codes from our experimental analysis a
 bit more rigorously: H + R3 (the 7,4-Hamming code where each bit gets repeated
 three times). Let us reason about performance taking a sequence we want to
 encode and send as an example. Say we want to send {\tt 0001}. The Hamming code
@@ -485,8 +485,8 @@ express the probability that exactly x of these blocks are corrupted as
 $p_{n=x} = {7 \choose x} p_3^x(1-p_3)^{7-x}$.
 
 If one or less 3-sub-blocks in the message are corrupted, our inner (Hamming)
-code can recover this. The probability of this event occurring is $p_{n \leq 1} =
-p_{n=0} + p_{n=1}$. This is also the probability that our channel will not
+code can recover this. The probability of this event occurring is $p_{n \leq 1}
+= p_{n=0} + p_{n=1}$. This is also the probability that our channel will not
 garble the message in an unrecoverable way. Whence we derive the message
 recovery probability $p_r$.
 \begin{equation}\label{eq:precover}
